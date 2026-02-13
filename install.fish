@@ -1,5 +1,12 @@
 #!/usr/bin/env fish
 
+# Check if running as root
+if test (id -u) -eq 0
+    echo "Error: Do not run this script as root or with sudo."
+    echo "The script will use sudo internally when needed."
+    exit 1
+end
+
 # Helper funcs
 function _out -a colour text
     set_color $colour
@@ -20,6 +27,10 @@ function sh-read
 end
 
 function confirm-overwrite -a path
+    if test -z "$path"
+        return 1
+    end
+    
     if test -e $path -o -L $path
         input "$path already exists. Overwrite? [Y/n] " -n
         set -l confirm (sh-read)
@@ -36,6 +47,7 @@ function confirm-overwrite -a path
 end
 
 # Variables
+set -l aur_helper paru
 set -q XDG_CONFIG_HOME && set -l config $XDG_CONFIG_HOME || set -l config $HOME/.config
 set -q XDG_STATE_HOME && set -l state $XDG_STATE_HOME || set -l state $HOME/.local/state
 
@@ -56,42 +68,60 @@ log 'This script will install and configure your system.'
 echo
 
 # Check and install paru
-if ! pacman -Q paru &> /dev/null
-    log "paru not installed. Installing..."
+if ! pacman -Q $aur_helper &> /dev/null
+    log "$aur_helper not installed. Installing..."
     sudo pacman -S --needed git base-devel --noconfirm
     cd /tmp
-    git clone https://aur.archlinux.org/paru.git
-    cd paru
+    git clone https://aur.archlinux.org/$aur_helper.git
+    cd $aur_helper
     makepkg -si --noconfirm
     cd ..
-    rm -rf paru
-    paru --gendb
-    log "paru installed successfully!"
+    rm -rf $aur_helper
+    $aur_helper --gendb
+    log "$aur_helper installed successfully!"
 else
-    log "paru is already installed."
+    log "$aur_helper is already installed."
 end
 
 # Cd into script directory
 cd (dirname (status filename)) || exit 1
 
-# Install packages without asking (except steam)
+# Install metapackage for deps
+if test -f PKGBUILD
+    log 'Installing metapackage...'
+    $aur_helper -Ui --noconfirm
+    fish -c 'rm -f caelestia-meta-*.pkg.tar.zst' 2> /dev/null
+end
+
+# Install packages
 log 'Installing base packages...'
 
 # Core packages from official repos
-sudo pacman -S --needed vim python python-pip nodejs go rust java-runtime-common \
-    ttf-ms-fonts thunar uwsm wget luarocks unzip cava obs-studio pavucontrol mpv \
+sudo pacman -S --needed vim neovim python python-pip nodejs go rust jre-openjdk \
+    thunar uwsm wget luarocks unzip cava obs-studio pavucontrol mpv \
     sddm --noconfirm
 
 # AUR packages
 log 'Installing AUR packages...'
-paru -S --needed nvim zen-browser-bin spicetify-cli spicetify-marketplace-bin \
-    equicord-installer-bin opencode-bin --noconfirm
+$aur_helper -S --needed ttf-ms-fonts brave-bin spotify \
+    discord equicord-installer-bin opencode --noconfirm
 
 # Ask for steam installation
 input "Do you want to install Steam? [y/N] " -n
 set -l steam_choice (sh-read)
 if test "$steam_choice" = 'y' -o "$steam_choice" = 'Y'
     log 'Installing Steam...'
+    
+    # Check if multilib is enabled
+    if ! grep -q '^\[multilib\]' /etc/pacman.conf
+        log 'Enabling [multilib] repository...'
+        sudo sed -i '/^#\[multilib\]/,/^#Include = \/etc\/pacman.d\/mirrorlist$/ { 
+            s/^#\[multilib\]/[multilib]/ 
+            s/^#Include = \/etc\/pacman.d\/mirrorlist$/Include = \/etc\/pacman.d\/mirrorlist/
+        }' /etc/pacman.conf
+        sudo pacman -Sy
+    end
+    
     sudo pacman -S --needed steam --noconfirm
 else
     log 'Skipping Steam installation.'
@@ -107,49 +137,22 @@ if confirm-overwrite $config/nvim
     ln -s (realpath nvim) $config/nvim
 end
 
-# Zen Browser
-set -l chrome $HOME/.zen/*/chrome
-if confirm-overwrite $chrome/userChrome.css
-    log 'Installing zen userChrome...'
-    ln -s (realpath zen/userChrome.css) $chrome/userChrome.css
+# Discord with Equicord - Based on official script approach
+log 'Installing Discord with Equicord...'
+
+# Try Equilotl first (as in official script), fallback to equicord-installer
+if command -v Equilotl &> /dev/null
+    sudo Equilotl -install -location /opt/discord
+    sudo Equilotl -install-openasar -location /opt/discord
+    $aur_helper -Rns equicord-installer-bin --noconfirm
+else if command -v equicord-installer &> /dev/null
+    log 'Using equicord-installer (new command name)...'
+    sudo equicord-installer -install -location /opt/discord
+    sudo equicord-installer -install-openasar -location /opt/discord
+    $aur_helper -Rns equicord-installer-bin --noconfirm
+else
+    log 'Warning: Equicord installer not found. Please install Equicord manually.'
 end
-
-# Zen native app
-set -l hosts $HOME/.mozilla/native-messaging-hosts
-set -l lib $HOME/.local/lib/caelestia
-
-if confirm-overwrite $hosts/caelestiafox.json
-    log 'Installing zen native app manifest...'
-    mkdir -p $hosts
-    cp zen/native_app/manifest.json $hosts/caelestiafox.json
-    sed -i "s|{{ \$lib }}|$lib|g" $hosts/caelestiafox.json
-end
-
-if confirm-overwrite $lib/caelestiafox
-    log 'Installing zen native app...'
-    mkdir -p $lib
-    ln -s (realpath zen/native_app/app.fish) $lib/caelestiafox
-end
-
-# Spotify (spicetify)
-log 'Setting up Spotify (spicetify)...'
-sudo chmod a+wr /opt/spotify
-sudo chmod a+wr /opt/spotify/Apps -R
-spicetify backup apply
-
-if confirm-overwrite $config/spicetify
-    log 'Installing spicetify config...'
-    ln -s (realpath spicetify) $config/spicetify
-    spicetify config current_theme caelestia color_scheme caelestia custom_apps marketplace 2> /dev/null
-    spicetify apply
-end
-
-# Discord with Equicord
-log 'Installing Equicord...'
-paru -S --needed discord equicord-installer-bin --noconfirm
-sudo Equilotl -install -location /opt/discord
-sudo Equilotl -install-openasar -location /opt/discord
-paru -Rns equicord-installer-bin --noconfirm
 
 # SDDM setup
 log 'Setting up SDDM...'
@@ -167,13 +170,6 @@ if test -d sddm.conf.d
         end
         sudo ln -sf (realpath $file) /etc/sddm.conf.d/$filename
     end
-end
-
-# Install metapackage for deps (if exists)
-if test -f PKGBUILD
-    log 'Installing metapackage...'
-    paru -Ui --noconfirm
-    fish -c 'rm -f caelestia-meta-*.pkg.tar.zst' 2> /dev/null
 end
 
 # Install hypr* configs
