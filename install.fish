@@ -93,14 +93,6 @@ if test -f PKGBUILD
     fish -c 'rm -f caelestia-meta-*.pkg.tar.zst' 2> /dev/null
 end
 
-# Install packages
-log 'Installing base packages...'
-
-# Core packages from official repos
-sudo pacman -S --needed vim neovim python python-pip nodejs go rust jre-openjdk \
-    thunar uwsm wget luarocks unzip cava obs-studio pavucontrol mpv \
-    sddm --noconfirm
-
 # AUR packages
 log 'Installing AUR packages...'
 $aur_helper -S --needed ttf-ms-fonts brave-bin spotify \

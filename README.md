@@ -39,11 +39,12 @@ Reboot your system after installation.
 
 ### Official Packages (pacman)
 
-- **Core:** vim, neovim, python, python-pip, nodejs, go, rust, jre-openjdk
-- **System:** hyprland, uwsm, xdg-desktop-portal-hyprland, xdg-desktop-portal-gtk
-- **Apps:** thunar, foot, brave, obs-studio, pavucontrol, mpv, sddm
+- **Core:** vim, neovim, python, python-pip, nodejs, go, rust, jdk-openjdk
+- **System:** hyprland, uwsm, xdg-desktop-portal-hyprland, xdg-desktop-portal-gtk, caelestia-cli, caelestia-shell
+- **Apps:** thunar, foot, brave, obs-studio, pavucontrol, mpv, sddm, libreoffice
 - **Tools:** wireplumber, wl-clipboard, cliphist, hyprpicker, inotify-tools, app2unit, trash-cli
 - **Extras:** btop, fastfetch, starship, jq, eza, cava, luarocks, unzip, wget
+- **Theming:** adw-gtk-theme, papirus-icon-theme, qt5ct-kde, qt6ct-kde, ttf-jetbrains-mono-nerd
 
 ### AUR Packages (paru/yay)
 
@@ -53,7 +54,6 @@ Reboot your system after installation.
 - discord
 - equicord-installer-bin
 - opencode
-- ttf-jetbrains-mono-nerd
 
 ### Steam (optional)
 
@@ -191,10 +191,12 @@ If you prefer to install manually:
 sudo pacman -S hyprland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk \
     hyprpicker wl-clipboard cliphist inotify-tools app2unit wireplumber \
     trash-cli foot fish fastfetch starship btop jq eza adw-gtk-theme \
-    papirus-icon-theme qt5ct-kde qt6ct-kde ttf-jetbrains-mono-nerd
+    papirus-icon-theme qt5ct-kde qt6ct-kde ttf-jetbrains-mono-nerd \
+    libreoffice vim neovim python python-pip nodejs npm go rust jdk-openjdk \
+    luarocks thunar uwsm cava obs-studio pavucontrol mpv sddm
 
 # From AUR
-paru -S caelestia-meta caelestia-shell caelestia-cli
+paru -S caelestia-cli caelestia-shell
 ```
 
 ### Configurations
