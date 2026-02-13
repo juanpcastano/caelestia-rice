@@ -1,51 +1,51 @@
 # Caelestia Rice
 
-> **🍴 Este es un fork personal de [caelestia-dots/caelestia](https://github.com/caelestia-dots/caelestia)**
+> **🍴 This is a personal fork of [caelestia-dots/caelestia](https://github.com/caelestia-dots/caelestia)**
 >
-> Todo el crédito por el trabajo original va para [@caelestia-dots](https://github.com/caelestia-dots). Este fork contiene mis modificaciones personales y configuraciones adaptadas a mis necesidades.
+> All credit for the original work goes to [@caelestia-dots](https://github.com/caelestia-dots). This fork contains my personal modifications and configurations adapted to my needs.
 
-Una configuración completa y elegante de Hyprland sin la intención de ser óptimo, simplemente que me da más serotonina que lo que de normal me da usar el pc
+A complete and elegant Hyprland configuration not meant to be optimal, just gives me more serotonin than what I normally get from using the PC
 
-## ✨ Características
+## ✨ Features
 
-- **Hyprland** como compositor Wayland con animaciones fluidas
-- **Shell personalizado (caelestia)** con notificaciones, widgets y panel
-- **Temas dinámicos** con esquemas de colores automáticos
-- **Configuraciones integradas** para NVim, Fish, Foot, Starship, Btop y más
-- **Gestión de ventanas** optimizada con keybindings intuitivos
-- **Launcher integrado** (Super) con búsqueda rápida
-- **Capturas de pantalla** y grabación integradas
-- **Gestor de portapapeles** con historial
+- **Hyprland** as Wayland compositor with smooth animations
+- **Custom shell (caelestia)** with notifications, widgets and panel
+- **Dynamic themes** with automatic color schemes
+- **Integrated configurations** for NVim, Fish, Foot, Starship, Btop and more
+- **Optimized window management** with intuitive keybindings
+- **Integrated launcher** (Super) with quick search
+- **Screenshots** and integrated recording
+- **Clipboard manager** with history
 
-## 📋 Requisitos
+## 📋 Requirements
 
 - Fish shell
 - Git
-- Base-devel (para compilar paquetes AUR)
+- Base-devel (to build AUR packages)
 
-> **⚠️ Advertencia importante:**
-> El script de instalación crea symlinks a los archivos de configuración, por lo que **NO puedes mover ni eliminar la carpeta del repositorio** después de instalar. Se recomienda clonar en `~/.local/share/caelestia-rice`.
+> **⚠️ Important Warning:**
+> The installation script creates symlinks to the configuration files, so **you CANNOT move or delete the repository folder** after installing. It's recommended to clone to `~/.local/share/caelestia-rice`.
 
-## 🚀 Instalación Rápida
+## 🚀 Quick Installation
 
 ```bash
 git clone https://github.com/juanpcastano/caelestia-rice.git ~/.local/share/caelestia-rice
 ~/.local/share/caelestia-rice/install.fish
 ```
 
-Reinicia tu sistema después de la instalación.
+Reboot your system after installation.
 
-## 🔧 Qué Instala el Script
+## 🔧 What the Script Installs
 
-### Paquetes Oficiales (pacman)
+### Official Packages (pacman)
 
-- **Núcleo:** vim, neovim, python, python-pip, nodejs, go, rust, jre-openjdk
-- **Sistema:** hyprland, uwsm, xdg-desktop-portal-hyprland, xdg-desktop-portal-gtk
+- **Core:** vim, neovim, python, python-pip, nodejs, go, rust, jre-openjdk
+- **System:** hyprland, uwsm, xdg-desktop-portal-hyprland, xdg-desktop-portal-gtk
 - **Apps:** thunar, foot, brave, obs-studio, pavucontrol, mpv, sddm
-- **Herramientas:** wireplumber, wl-clipboard, cliphist, hyprpicker, inotify-tools, app2unit, trash-cli
+- **Tools:** wireplumber, wl-clipboard, cliphist, hyprpicker, inotify-tools, app2unit, trash-cli
 - **Extras:** btop, fastfetch, starship, jq, eza, cava, luarocks, unzip, wget
 
-### Paquetes AUR (paru/yay)
+### AUR Packages (paru/yay)
 
 - ttf-ms-fonts
 - brave-bin
@@ -55,151 +55,151 @@ Reinicia tu sistema después de la instalación.
 - opencode
 - ttf-jetbrains-mono-nerd
 
-### Steam (opcional)
+### Steam (optional)
 
-El script pregunta si deseas instalar Steam. Si aceptas:
+The script asks if you want to install Steam. If you accept:
 
-- Habilita automáticamente el repositorio `[multilib]`
-- Instala Steam desde los repositorios oficiales
+- Automatically enables the `[multilib]` repository
+- Installs Steam from official repositories
 
-### Configuraciones que Configura
+### Configurations Set Up
 
-1. **NVim** - Editor con configuración completa
-2. **Hyprland** - Compositor con todas las configs
-3. **Fish** - Shell con temas y funciones
-4. **Foot** - Terminal emulador
-5. **Starship** - Prompt personalizado
-6. **Fastfetch** - Información del sistema
+1. **NVim** - Editor with complete configuration
+2. **Hyprland** - Compositor with all configs
+3. **Fish** - Shell with themes and functions
+4. **Foot** - Terminal emulator
+5. **Starship** - Custom prompt
+6. **Fastfetch** - System information
 7. **UWSM** - Session manager
-8. **Btop** - Monitor de recursos
-9. **SDDM** - Login manager (habilitado automáticamente)
-10. **Discord** - Con Equicord y OpenAsar instalados
+8. **Btop** - Resource monitor
+9. **SDDM** - Login manager (automatically enabled)
+10. **Discord** - With Equicord and OpenAsar installed
 
-### Discord con Equicord
+### Discord with Equicord
 
-El script instala automáticamente Equicord en Discord usando el instalador oficial.
+The script automatically installs Equicord on Discord using the official installer.
 
-## ⌨️ Keybindings de Hyprland
+## ⌨️ Hyprland Keybindings
 
-### Lanzadores y Shell
+### Launchers and Shell
 
-| Atajo                 | Acción                    |
+| Shortcut              | Action                    |
 | --------------------- | ------------------------- |
-| `Super`               | Abrir launcher            |
-| `Super` + `Tecla`     | Interrumpir launcher      |
-| `Ctrl + Alt + Delete` | Menú de sesión            |
-| `Super + N`           | Limpiar notificaciones    |
-| `Super + M`           | Mostrar todos los paneles |
-| `Super + B`           | Bloquear pantalla         |
-| `Super + Alt + B`     | Restaurar y bloquear      |
+| `Super`               | Open launcher             |
+| `Super` + `Key`       | Interrupt launcher        |
+| `Ctrl + Alt + Delete` | Session menu              |
+| `Super + N`           | Clear notifications       |
+| `Super + M`           | Show all panels           |
+| `Super + B`           | Lock screen               |
+| `Super + Alt + B`     | Restore and lock          |
 
-### Workspaces (Escritorios)
+### Workspaces
 
-| Atajo                                 | Acción                                        |
+| Shortcut                              | Action                                        |
 | ------------------------------------- | --------------------------------------------- |
-| `Super + 1-9,0`                       | Cambiar al workspace #                        |
-| `Super + Scroll` o `Ctrl+Super + H/L` | Workspace anterior/siguiente                  |
-| `Super + Page Up/Down`                | Workspace anterior/siguiente                  |
-| `Super + Shift + 1-9,0`               | Mover ventana al workspace #                  |
-| `Super + Shift + H/L`                 | Mover ventana al workspace anterior/siguiente |
+| `Super + 1-9,0`                       | Switch to workspace #                         |
+| `Super + Scroll` or `Ctrl+Super + H/L`| Previous/next workspace                       |
+| `Super + Page Up/Down`                | Previous/next workspace                       |
+| `Super + Shift + 1-9,0`               | Move window to workspace #                    |
+| `Super + Shift + H/L`                 | Move window to previous/next workspace        |
 
-### Ventanas
+### Windows
 
-| Atajo                    | Acción                                      |
+| Shortcut                 | Action                                      |
 | ------------------------ | ------------------------------------------- |
-| `Super + H/J/K/L`        | Mover foco (izquierda/abajo/arriba/derecha) |
-| `Super + Alt + H/J/K/L`  | Mover ventana                               |
-| `Super + Z` + arrastrar  | Mover ventana con mouse                     |
-| `Super + X` + arrastrar  | Redimensionar ventana con mouse             |
-| `Super + Clic izquierdo` | Mover ventana                               |
-| `Super + Clic derecho`   | Redimensionar ventana                       |
-| `Super + -/+`            | Ajustar ratio de división                   |
-| `Super + P`              | Alternar ventana flotante                   |
-| `Super + F`              | Pantalla completa                           |
-| `Super + Alt + F`        | Pantalla completa con bordes                |
-| `Super + Alt + P`        | Modo Picture-in-Picture                     |
-| `Super + C`              | Cerrar ventana activa                       |
-| `Ctrl + Super + \`       | Centrar ventana                             |
-| `Ctrl + Super + Alt + \` | Centrar y redimensionar (55% x 70%)         |
+| `Super + H/J/K/L`        | Move focus (left/down/up/right)             |
+| `Super + Alt + H/J/K/L`  | Move window                                 |
+| `Super + Z` + drag       | Move window with mouse                      |
+| `Super + X` + drag       | Resize window with mouse                    |
+| `Super + Left click`     | Move window                                 |
+| `Super + Right click`    | Resize window                               |
+| `Super + -/+`            | Adjust split ratio                          |
+| `Super + P`              | Toggle floating window                      |
+| `Super + F`              | Fullscreen                                  |
+| `Super + Alt + F`        | Fullscreen with borders                     |
+| `Super + Alt + P`        | Picture-in-Picture mode                     |
+| `Super + C`              | Close active window                         |
+| `Ctrl + Super + \`       | Center window                               |
+| `Ctrl + Super + Alt + \` | Center and resize (55% x 70%)               |
 
-### Aplicaciones
+### Applications
 
-| Atajo       | Acción                          |
-| ----------- | ------------------------------- |
-| `Super + T` | Terminal (Foot)                 |
-| `Super + W` | Navegador (Brave)               |
-| `Super + E` | Explorador de archivos (Thunar) |
+| Shortcut    | Action                    |
+| ----------- | ------------------------- |
+| `Super + T` | Terminal (Foot)           |
+| `Super + W` | Browser (Brave)           |
+| `Super + E` | File Manager (Thunar)     |
 
-### Capturas de Pantalla
+### Screenshots
 
-| Atajo                     | Acción                                    |
+| Shortcut                  | Action                                    |
 | ------------------------- | ----------------------------------------- |
-| `Print`                   | Capturar pantalla completa → portapapeles |
-| `Super + Shift + S`       | Capturar región                           |
-| `Super + Shift + Alt + S` | Capturar región (congelar pantalla)       |
-| `Ctrl + Alt + R`          | Grabar pantalla                           |
-| `Super + Alt + R`         | Grabar pantalla con audio                 |
-| `Super + Shift + Alt + R` | Grabar región                             |
+| `Print`                   | Full screenshot → clipboard               |
+| `Super + Shift + S`       | Capture region                            |
+| `Super + Shift + Alt + S` | Capture region (freeze screen)            |
+| `Ctrl + Alt + R`          | Record screen                             |
+| `Super + Alt + R`         | Record screen with audio                  |
+| `Super + Shift + Alt + R` | Record region                             |
 
-### Portapapeles y Emoji
+### Clipboard and Emoji
 
-| Atajo                    | Acción                                     |
+| Shortcut                 | Action                                     |
 | ------------------------ | ------------------------------------------ |
-| `Super + V`              | Historial del portapapeles                 |
-| `Super + Alt + V`        | Historial del portapapeles (eliminar ítem) |
-| `Super + .`              | Selector de emoji                          |
-| `Ctrl + Shift + Alt + V` | Pegar último ítem (alternativo)            |
-| `Super + Shift + C`      | Selector de color                          |
+| `Super + V`              | Clipboard history                          |
+| `Super + Alt + V`        | Clipboard history (delete item)            |
+| `Super + .`              | Emoji picker                               |
+| `Ctrl + Shift + Alt + V` | Paste last item (alternative)              |
+| `Super + Shift + C`      | Color picker                               |
 
-### Brillo y Volumen (Teclas Multimedia)
+### Brightness and Volume (Multimedia Keys)
 
-| Atajo                              | Acción              |
+| Shortcut                           | Action              |
 | ---------------------------------- | ------------------- |
-| `XF86MonBrightnessUp/Down`         | Subir/Bajar brillo  |
-| `XF86AudioRaiseVolume/LowerVolume` | Subir/Bajar volumen |
-| `XF86AudioMute`                    | Silenciar salida    |
-| `XF86AudioMicMute`                 | Silenciar micrófono |
-| `Super + Shift + M`                | Silenciar salida    |
+| `XF86MonBrightnessUp/Down`         | Increase/Decrease brightness |
+| `XF86AudioRaiseVolume/LowerVolume` | Increase/Decrease volume     |
+| `XF86AudioMute`                    | Mute output         |
+| `XF86AudioMicMute`                 | Mute microphone     |
+| `Super + Shift + M`                | Mute output         |
 
-### Media (Control multimedia)
+### Media (Multimedia Control)
 
-| Atajo                  | Acción          |
+| Shortcut               | Action          |
 | ---------------------- | --------------- |
 | `Ctrl + Super + Space` | Play/Pause      |
 | `XF86AudioPlay/Pause`  | Play/Pause      |
-| `Ctrl + Super + =`     | Siguiente pista |
-| `XF86AudioNext`        | Siguiente pista |
-| `Ctrl + Super + -`     | Pista anterior  |
-| `XF86AudioPrev`        | Pista anterior  |
-| `XF86AudioStop`        | Detener         |
+| `Ctrl + Super + =`     | Next track      |
+| `XF86AudioNext`        | Next track      |
+| `Ctrl + Super + -`     | Previous track  |
+| `XF86AudioPrev`        | Previous track  |
+| `XF86AudioStop`        | Stop            |
 
-### Shell y Reinicio
+### Shell and Restart
 
-| Atajo                      | Acción          |
+| Shortcut                   | Action          |
 | -------------------------- | --------------- |
-| `Ctrl + Super + Shift + R` | Matar shell     |
-| `Ctrl + Super + Alt + R`   | Reiniciar shell |
+| `Ctrl + Super + Shift + R` | Kill shell      |
+| `Ctrl + Super + Alt + R`   | Restart shell   |
 
-## 📝 Instalación Manual
+## 📝 Manual Installation
 
-Si prefieres instalar manualmente:
+If you prefer to install manually:
 
-### Dependencias
+### Dependencies
 
 ```bash
-# Paquetes oficiales
+# Official packages
 sudo pacman -S hyprland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk \
     hyprpicker wl-clipboard cliphist inotify-tools app2unit wireplumber \
     trash-cli foot fish fastfetch starship btop jq eza adw-gtk-theme \
     papirus-icon-theme qt5ct-kde qt6ct-kde ttf-jetbrains-mono-nerd
 
-# Desde AUR
+# From AUR
 paru -S caelestia-meta caelestia-shell caelestia-cli
 ```
 
-### Configuraciones
+### Configurations
 
-Copia o crea symlinks de las carpetas:
+Copy or create symlinks of the folders:
 
 - `hypr/` → `~/.config/hypr/`
 - `foot/` → `~/.config/foot/`
@@ -210,46 +210,46 @@ Copia o crea symlinks de las carpetas:
 - `nvim/` → `~/.config/nvim/`
 - `starship.toml` → `~/.config/starship.toml`
 
-## 🔄 Actualización
+## 🔄 Updating
 
-Para actualizar el rice:
+To update the rice:
 
 ```bash
 cd ~/.local/share/caelestia
 git pull
 ```
 
-Luego actualiza los paquetes AUR:
+Then update AUR packages:
 
 ```bash
 paru
 ```
 
-## 🐛 Solución de Problemas
+## 🐛 Troubleshooting
 
-### Hyprland no inicia
+### Hyprland won't start
 
-- Verifica que no moviste la carpeta del repositorio
-- Comprueba los logs: `hyprctl logs`
+- Verify you didn't move the repository folder
+- Check the logs: `hyprctl logs`
 
-### El shell no aparece
+### Shell doesn't appear
 
-- Verifica que `caelestia` está instalado: `which caelestia`
-- Reinicia el shell: `Ctrl + Super + Alt + R`
+- Verify `caelestia` is installed: `which caelestia`
+- Restart the shell: `Ctrl + Super + Alt + R`
 
-### Discord sin Equicord
+### Discord without Equicord
 
-- Reinstala manualmente: `sudo equicord-installer -install -location /opt/discord`
+- Reinstall manually: `sudo equicord-installer -install -location /opt/discord`
 
-## 📄 Licencia
+## 📄 License
 
-Este proyecto está bajo la licencia GPL-3.0.
+This project is under the GPL-3.0 license.
 
-## 🙏 Créditos
+## 🙏 Credits
 
-- **Proyecto original:** [caelestia-dots/caelestia](https://github.com/caelestia-dots/caelestia) - Creado por [@caelestia-dots](https://github.com/caelestia-dots)
-- **Fork por:** [@juanpcastano](https://github.com/juanpcastano)
+- **Original project:** [caelestia-dots/caelestia](https://github.com/caelestia-dots/caelestia) - Created by [@caelestia-dots](https://github.com/caelestia-dots)
+- **Fork by:** [@juanpcastano](https://github.com/juanpcastano)
 
 ---
 
-**Nota:** Este rice está diseñado para funcionar como un sistema completo. Las configuraciones están interconectadas para proporcionar una experiencia cohesive.
+**Note:** This rice is designed to work as a complete system. The configurations are interconnected to provide a cohesive experience.
