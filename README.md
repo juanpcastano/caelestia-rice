@@ -1,144 +1,266 @@
-# caelestia
+# Caelestia Rice
 
-This is the main repo of the caelestia dots and contains the user configs for
-apps. This repo also includes an install script to install the entire dots.
+Una configuración completa y elegante de Hyprland sin la intención de ser óptimo, simplemente que me más serotonina que lo que de normal me da usar el pc
 
-## Installation
+## ✨ Características
 
-Simply clone this repo and run the install script (you need
-[`fish`](https://github.com/fish-shell/fish-shell) installed).
+- **Hyprland** como compositor Wayland con animaciones fluidas
+- **Shell personalizado (caelestia)** con notificaciones, widgets y panel
+- **Temas dinámicos** con esquemas de colores automáticos
+- **Configuraciones integradas** para NVim, Fish, Foot, Starship, Btop y más
+- **Gestión de ventanas** optimizada con keybindings intuitivos
+- **Launcher integrado** (Super) con búsqueda rápida
+- **Capturas de pantalla** y grabación integradas
+- **Gestor de portapapeles** con historial
 
-> [!WARNING]
-> The install script symlinks all configs into place, so you CANNOT
-> move/remove the repo folder once you run the install script. If
-> you do, most apps will not behave properly and some (e.g. Hyprland)
-> will fail to start completely. I recommend cloning the repo to
-> `~/.local/share/caelestia`.
+## 📋 Requisitos
 
-The install script has some options for installing configs for some apps.
+- Fish shell
+- Git
+- Base-devel (para compilar paquetes AUR)
 
-```
-$ ./install.fish -h
-usage: ./install.sh [-h] [--noconfirm] [--spotify] [--vscode] [--discord] [--aur-helper]
+> **⚠️ Advertencia importante:**
+> El script de instalación crea symlinks a los archivos de configuración, por lo que **NO puedes mover ni eliminar la carpeta del repositorio** después de instalar. Se recomienda clonar en `~/.local/share/caelestia-rice`.
 
-options:
-  -h, --help                  show this help message and exit
-  --noconfirm                 do not confirm package installation
-  --spotify                   install Spotify (Spicetify)
-  --vscode=[codium|code]      install VSCodium (or VSCode)
-  --discord                   install Discord (OpenAsar + Equicord)
-  --zen                       install Zen browser
-  --aur-helper=[yay|paru]     the AUR helper to use
+## 🚀 Instalación Rápida
+
+```bash
+git clone https://github.com/caelestia-dots/caelestia.git ~/.local/share/caelestia-rice
+~/.local/share/caelestia-rice/install.fish
 ```
 
-For example:
+Reinicia tu sistema después de la instalación.
 
-```sh
-git clone https://github.com/caelestia-dots/caelestia.git ~/.local/share/caelestia
-~/.local/share/caelestia/install.fish
+## 🔧 Qué Instala el Script
+
+### Paquetes Oficiales (pacman)
+
+- **Núcleo:** vim, neovim, python, python-pip, nodejs, go, rust, jre-openjdk
+- **Sistema:** hyprland, uwsm, xdg-desktop-portal-hyprland, xdg-desktop-portal-gtk
+- **Apps:** thunar, foot, brave, obs-studio, pavucontrol, mpv, sddm
+- **Herramientas:** wireplumber, wl-clipboard, cliphist, hyprpicker, inotify-tools, app2unit, trash-cli
+- **Extras:** btop, fastfetch, starship, jq, eza, cava, luarocks, unzip, wget
+
+### Paquetes AUR (paru/yay)
+
+- ttf-ms-fonts
+- brave-bin
+- spotify
+- discord
+- equicord-installer-bin
+- opencode
+- ttf-jetbrains-mono-nerd
+
+### Steam (opcional)
+
+El script pregunta si deseas instalar Steam. Si aceptas:
+
+- Habilita automáticamente el repositorio `[multilib]`
+- Instala Steam desde los repositorios oficiales
+
+### Configuraciones que Configura
+
+1. **NVim** - Editor con configuración completa
+2. **Hyprland** - Compositor con todas las configs
+3. **Fish** - Shell con temas y funciones
+4. **Foot** - Terminal emulador
+5. **Starship** - Prompt personalizado
+6. **Fastfetch** - Información del sistema
+7. **UWSM** - Session manager
+8. **Btop** - Monitor de recursos
+9. **SDDM** - Login manager (habilitado automáticamente)
+10. **Discord** - Con Equicord y OpenAsar instalados
+
+### Discord con Equicord
+
+El script instala automáticamente Equicord en Discord usando el instalador oficial.
+
+## ⌨️ Keybindings de Hyprland
+
+### Lanzadores y Shell
+
+| Atajo                 | Acción                    |
+| --------------------- | ------------------------- |
+| `Super`               | Abrir launcher            |
+| `Super` + `Tecla`     | Interrumpir launcher      |
+| `Ctrl + Alt + Delete` | Menú de sesión            |
+| `Super + N`           | Limpiar notificaciones    |
+| `Super + M`           | Mostrar todos los paneles |
+| `Super + B`           | Bloquear pantalla         |
+| `Super + Alt + B`     | Restaurar y bloquear      |
+
+### Workspaces (Escritorios)
+
+| Atajo                                 | Acción                                        |
+| ------------------------------------- | --------------------------------------------- |
+| `Super + 1-9,0`                       | Cambiar al workspace #                        |
+| `Super + Scroll` o `Ctrl+Super + H/L` | Workspace anterior/siguiente                  |
+| `Super + Page Up/Down`                | Workspace anterior/siguiente                  |
+| `Super + Shift + 1-9,0`               | Mover ventana al workspace #                  |
+| `Super + Shift + H/L`                 | Mover ventana al workspace anterior/siguiente |
+
+### Ventanas
+
+| Atajo                    | Acción                                      |
+| ------------------------ | ------------------------------------------- |
+| `Super + H/J/K/L`        | Mover foco (izquierda/abajo/arriba/derecha) |
+| `Super + Alt + H/J/K/L`  | Mover ventana                               |
+| `Super + Z` + arrastrar  | Mover ventana con mouse                     |
+| `Super + X` + arrastrar  | Redimensionar ventana con mouse             |
+| `Super + Clic izquierdo` | Mover ventana                               |
+| `Super + Clic derecho`   | Redimensionar ventana                       |
+| `Super + -/+`            | Ajustar ratio de división                   |
+| `Super + P`              | Alternar ventana flotante                   |
+| `Super + F`              | Pantalla completa                           |
+| `Super + Alt + F`        | Pantalla completa con bordes                |
+| `Super + Alt + P`        | Modo Picture-in-Picture                     |
+| `Super + C`              | Cerrar ventana activa                       |
+| `Ctrl + Super + \`       | Centrar ventana                             |
+| `Ctrl + Super + Alt + \` | Centrar y redimensionar (55% x 70%)         |
+
+### Aplicaciones
+
+| Atajo       | Acción                          |
+| ----------- | ------------------------------- |
+| `Super + T` | Terminal (Foot)                 |
+| `Super + W` | Navegador (Brave)               |
+| `Super + E` | Explorador de archivos (Thunar) |
+
+### Capturas de Pantalla
+
+| Atajo                     | Acción                                    |
+| ------------------------- | ----------------------------------------- |
+| `Print`                   | Capturar pantalla completa → portapapeles |
+| `Super + Shift + S`       | Capturar región                           |
+| `Super + Shift + Alt + S` | Capturar región (congelar pantalla)       |
+| `Ctrl + Alt + R`          | Grabar pantalla                           |
+| `Super + Alt + R`         | Grabar pantalla con audio                 |
+| `Super + Shift + Alt + R` | Grabar región                             |
+
+### Portapapeles y Emoji
+
+| Atajo                    | Acción                                     |
+| ------------------------ | ------------------------------------------ |
+| `Super + V`              | Historial del portapapeles                 |
+| `Super + Alt + V`        | Historial del portapapeles (eliminar ítem) |
+| `Super + .`              | Selector de emoji                          |
+| `Ctrl + Shift + Alt + V` | Pegar último ítem (alternativo)            |
+| `Super + Shift + C`      | Selector de color                          |
+
+### Brillo y Volumen (Teclas Multimedia)
+
+| Atajo                              | Acción              |
+| ---------------------------------- | ------------------- |
+| `XF86MonBrightnessUp/Down`         | Subir/Bajar brillo  |
+| `XF86AudioRaiseVolume/LowerVolume` | Subir/Bajar volumen |
+| `XF86AudioMute`                    | Silenciar salida    |
+| `XF86AudioMicMute`                 | Silenciar micrófono |
+| `Super + Shift + M`                | Silenciar salida    |
+
+### Media (Control multimedia)
+
+| Atajo                  | Acción          |
+| ---------------------- | --------------- |
+| `Ctrl + Super + Space` | Play/Pause      |
+| `XF86AudioPlay/Pause`  | Play/Pause      |
+| `Ctrl + Super + =`     | Siguiente pista |
+| `XF86AudioNext`        | Siguiente pista |
+| `Ctrl + Super + -`     | Pista anterior  |
+| `XF86AudioPrev`        | Pista anterior  |
+| `XF86AudioStop`        | Detener         |
+
+### Shell y Reinicio
+
+| Atajo                      | Acción          |
+| -------------------------- | --------------- |
+| `Ctrl + Super + Shift + R` | Matar shell     |
+| `Ctrl + Super + Alt + R`   | Reiniciar shell |
+
+## 📝 Instalación Manual
+
+Si prefieres instalar manualmente:
+
+### Dependencias
+
+```bash
+# Paquetes oficiales
+sudo pacman -S hyprland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk \
+    hyprpicker wl-clipboard cliphist inotify-tools app2unit wireplumber \
+    trash-cli foot fish fastfetch starship btop jq eza adw-gtk-theme \
+    papirus-icon-theme qt5ct-kde qt6ct-kde ttf-jetbrains-mono-nerd
+
+# Desde AUR
+paru -S caelestia-meta caelestia-shell caelestia-cli
 ```
 
-### Manual installation
+### Configuraciones
 
-Dependencies:
+Copia o crea symlinks de las carpetas:
 
--   hyprland
--   xdg-desktop-portal-hyprland
--   xdg-desktop-portal-gtk
--   hyprpicker
--   wl-clipboard
--   cliphist
--   inotify-tools
--   app2unit
--   wireplumber
--   trash-cli
--   foot
--   fish
--   fastfetch
--   starship
--   btop
--   jq
--   eza
--   adw-gtk-theme
--   papirus-icon-theme
--   qt5ct-kde
--   qt6ct-kde
--   ttf-jetbrains-mono-nerd
+- `hypr/` → `~/.config/hypr/`
+- `foot/` → `~/.config/foot/`
+- `fish/` → `~/.config/fish/`
+- `fastfetch/` → `~/.config/fastfetch/`
+- `uwsm/` → `~/.config/uwsm/`
+- `btop/` → `~/.config/btop/`
+- `nvim/` → `~/.config/nvim/`
+- `starship.toml` → `~/.config/starship.toml`
 
-Install all dependencies and follow the installation guides of the
-[shell](https://github.com/caelestia-dots/shell) and [cli](https://github.com/caelestia-dots/cli)
-to install them.
+### Spicetify (Spotify)
 
-> [!TIP]
-> If on Arch or an Arch-based distro, there is a meta package available [in this repository](PKGBUILD)
-> that pulls in all dependencies. It can be installed through the install script, makepkg/pacman, yay,
-> paru, or your preferred AUR helper.
-
-Then copy or symlink the `hypr`, `foot`, `fish`, `fastfetch`, `uwsm` and `btop` folders to the
-`$XDG_CONFIG_HOME` (usually `~/.config`) directory. e.g. `hypr -> ~/.config/hypr`.
-Copy `starship.toml` to `$XDG_CONFIG_HOME/starship.toml`.
-
-#### Installing Spicetify configs:
-
-Follow the Spicetify [installation instructions](https://spicetify.app/docs/advanced-usage/installation),
-copy or symlink the `spicetify` folder to `$XDG_CONFIG_HOME/spicetify` and run
-
-```sh
+```bash
+# Instala Spicetify primero
 spicetify config current_theme caelestia color_scheme caelestia custom_apps marketplace
 spicetify apply
 ```
 
-#### Installing VSCode/VSCodium configs:
+### VSCode/VSCodium
 
-Install VSCode or VSCodium, then copy or symlink `vscode/settings.json` and
-`vscode/keybindings.json` into the `$XDG_CONFIG_HOME/Code/User` (or `$XDG_CONFIG_HOME/VSCodium/User`
-if using VSCodium) folder. Then copy or symlink `vscode/flags.conf` to `$XDG_CONFIG_HOME/code-flags.conf`
-(or `$XDG_CONFIG_HOME/codium-flags.conf` if using VSCodium).
+```bash
+# Copia las configs
+cp vscode/settings.json ~/.config/Code/User/
+cp vscode/keybindings.json ~/.config/Code/User/
+cp vscode/flags.conf ~/.config/code-flags.conf
 
-Finally, install the extension VSIX from `vscode/caelestia-vscode-integration`.
-
-```sh
-# Use `codium` if using VSCodium
+# Instala la extensión
 code --install-extension vscode/caelestia-vscode-integration/caelestia-vscode-integration-*.vsix
 ```
 
-#### Installing Zen Browser configs:
+## 🔄 Actualización
 
-Install Zen Browser, then copy or symlink `zen/userChrome.css` to the `chrome` folder in your
-profile of choice in `~/.zen`. e.g. `zen/userChrome.css -> ~/.zen/<profile>/chrome/userChrome.css`.
+Para actualizar el rice:
 
-Now install the native app by copying `zen/native_app/manifest.json` to
-`~/.mozilla/native-messaging-hosts/caelestiafox.json` and replacing the `{{ $lib }}` string in it
-with the absolute path of `~/.local/lib/caelestia` (this must be the absolute path, e.g.
-`/home/user/.local/lib/caelestia`). Then copy or symlink `zen/native_app/app.fish` to
-`~/.local/lib/caelestia/caelestiafox`.
+```bash
+cd ~/.local/share/caelestia
+git pull
+```
 
-Finally, install the CaelestiaFox extension from [here](https://addons.mozilla.org/en-US/firefox/addon/caelestiafox).
+Luego actualiza los paquetes AUR:
 
-## Updating
+```bash
+paru
+```
 
-Simply run `yay` to update the AUR packages, then `cd` into the repo directory and run `git pull` to update the configs.
+## 🐛 Solución de Problemas
 
-## Usage
+### Hyprland no inicia
 
-> [!NOTE]
-> These dots do not contain a login manager (for now), so you must install a
-> login manager yourself unless you want to log in from a TTY. I recommend
-> [`greetd`](https://sr.ht/~kennylevinsen/greetd) with
-> [`tuigreet`](https://github.com/apognu/tuigreet), however you can use
-> any login manager you want.
+- Verifica que no moviste la carpeta del repositorio
+- Comprueba los logs: `hyprctl logs`
 
-There aren't really any usage instructions... these are a set of dotfiles.
+### El shell no aparece
 
-Here's a list of useful keybinds though:
+- Verifica que `caelestia` está instalado: `which caelestia`
+- Reinicia el shell: `Ctrl + Super + Alt + R`
 
--   `Super` - open launcher
--   `Super` + `#` - switch to workspace `#`
--   `Super` `Alt` + `#` - move window to workspace `#`
--   `Super` + `T` - open terminal (foot)
--   `Super` + `W` - open browser (zen)
--   `Super` + `C` - open IDE (vscodium)
--   `Super` + `S` - toggle special workspace or close current special workspace
--   `Ctrl` `Alt` + `Delete` - open session menu
--   `Ctrl` `Super` + `Space` - toggle media play state
--   `Ctrl` `Super` `Alt` + `R` - restart the shell
+### Discord sin Equicord
+
+- Reinstala manualmente: `sudo equicord-installer -install -location /opt/discord`
+
+## 📄 Licencia
+
+Este proyecto está bajo la licencia GPL-3.0.
+
+---
+
+**Nota:** Este rice está diseñado para funcionar como un sistema completo. Las configuraciones están interconectadas para proporcionar una experiencia cohesive.
