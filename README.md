@@ -1,6 +1,10 @@
 # Caelestia Rice
 
-Una configuración completa y elegante de Hyprland sin la intención de ser óptimo, simplemente que me más serotonina que lo que de normal me da usar el pc
+> **🍴 Este es un fork personal de [caelestia-dots/caelestia](https://github.com/caelestia-dots/caelestia)**
+>
+> Todo el crédito por el trabajo original va para [@caelestia-dots](https://github.com/caelestia-dots). Este fork contiene mis modificaciones personales y configuraciones adaptadas a mis necesidades.
+
+Una configuración completa y elegante de Hyprland sin la intención de ser óptimo, simplemente que me da más serotonina que lo que de normal me da usar el pc
 
 ## ✨ Características
 
@@ -25,7 +29,7 @@ Una configuración completa y elegante de Hyprland sin la intención de ser ópt
 ## 🚀 Instalación Rápida
 
 ```bash
-git clone https://github.com/caelestia-dots/caelestia.git ~/.local/share/caelestia-rice
+git clone https://github.com/juanpcastano/caelestia-rice.git ~/.local/share/caelestia-rice
 ~/.local/share/caelestia-rice/install.fish
 ```
 
@@ -260,6 +264,11 @@ paru
 ## 📄 Licencia
 
 Este proyecto está bajo la licencia GPL-3.0.
+
+## 🙏 Créditos
+
+- **Proyecto original:** [caelestia-dots/caelestia](https://github.com/caelestia-dots/caelestia) - Creado por [@caelestia-dots](https://github.com/caelestia-dots)
+- **Fork por:** [@juanpcastano](https://github.com/juanpcastano)
 
 ---
 
