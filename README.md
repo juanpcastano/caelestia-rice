@@ -210,26 +210,6 @@ Copia o crea symlinks de las carpetas:
 - `nvim/` → `~/.config/nvim/`
 - `starship.toml` → `~/.config/starship.toml`
 
-### Spicetify (Spotify)
-
-```bash
-# Instala Spicetify primero
-spicetify config current_theme caelestia color_scheme caelestia custom_apps marketplace
-spicetify apply
-```
-
-### VSCode/VSCodium
-
-```bash
-# Copia las configs
-cp vscode/settings.json ~/.config/Code/User/
-cp vscode/keybindings.json ~/.config/Code/User/
-cp vscode/flags.conf ~/.config/code-flags.conf
-
-# Instala la extensión
-code --install-extension vscode/caelestia-vscode-integration/caelestia-vscode-integration-*.vsix
-```
-
 ## 🔄 Actualización
 
 Para actualizar el rice:
