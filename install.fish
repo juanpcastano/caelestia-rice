@@ -1,37 +1,8 @@
 #!/usr/bin/env fish
 
-argparse -n 'install.fish' -X 0 \
-    'h/help' \
-    'noconfirm' \
-    'spotify' \
-    'vscode=?!contains -- "$_flag_value" codium code' \
-    'discord' \
-    'zen' \
-    'aur-helper=!contains -- "$_flag_value" yay paru' \
-    -- $argv
-or exit
-
-# Print help
-if set -q _flag_h
-    echo 'usage: ./install.sh [-h] [--noconfirm] [--spotify] [--vscode] [--discord] [--aur-helper]'
-    echo
-    echo 'options:'
-    echo '  -h, --help                  show this help message and exit'
-    echo '  --noconfirm                 do not confirm package installation'
-    echo '  --spotify                   install Spotify (Spicetify)'
-    echo '  --vscode=[codium|code]      install VSCodium (or VSCode)'
-    echo '  --discord                   install Discord (OpenAsar + Equicord)'
-    echo '  --zen                       install Zen browser'
-    echo '  --aur-helper=[yay|paru]     the AUR helper to use'
-
-    exit
-end
-
-
 # Helper funcs
 function _out -a colour text
     set_color $colour
-    # Pass arguments other than text to echo
     echo $argv[3..] -- ":: $text"
     set_color normal
 end
@@ -50,37 +21,25 @@ end
 
 function confirm-overwrite -a path
     if test -e $path -o -L $path
-        # No prompt if noconfirm
-        if set -q noconfirm
-            input "$path already exists. Overwrite? [Y/n]"
+        input "$path already exists. Overwrite? [Y/n] " -n
+        set -l confirm (sh-read)
+
+        if test "$confirm" = 'n' -o "$confirm" = 'N'
+            log 'Skipping...'
+            return 1
+        else
             log 'Removing...'
             rm -rf $path
-        else
-            # Prompt user
-            input "$path already exists. Overwrite? [Y/n] " -n
-            set -l confirm (sh-read)
-
-            if test "$confirm" = 'n' -o "$confirm" = 'N'
-                log 'Skipping...'
-                return 1
-            else
-                log 'Removing...'
-                rm -rf $path
-            end
         end
     end
-
     return 0
 end
 
-
 # Variables
-set -q _flag_noconfirm && set noconfirm '--noconfirm'
-set -q _flag_aur_helper && set -l aur_helper $_flag_aur_helper || set -l aur_helper paru
 set -q XDG_CONFIG_HOME && set -l config $XDG_CONFIG_HOME || set -l config $HOME/.config
 set -q XDG_STATE_HOME && set -l state $XDG_STATE_HOME || set -l state $HOME/.local/state
 
-# Startup prompt
+# ASCII Art and greeting
 set_color magenta
 echo '╭─────────────────────────────────────────────────╮'
 echo '│      ______           __          __  _         │'
@@ -91,79 +50,139 @@ echo '│   \____/\__,_/\___/_/\___/____/\__/_/\__,_/     │'
 echo '│                                                 │'
 echo '╰─────────────────────────────────────────────────╯'
 set_color normal
-log 'Welcome to the Caelestia dotfiles installer!'
-log 'Before continuing, please ensure you have made a backup of your config directory.'
 
-# Prompt for backup
-if ! set -q _flag_noconfirm
-    log '[1] Two steps ahead of you!  [2] Make one for me please!'
-    input '=> ' -n
-    set -l choice (sh-read)
+log 'Welcome to the Caelestia rice installer!'
+log 'This script will install and configure your system.'
+echo
 
-    if contains -- "$choice" 1 2
-        if test $choice = 2
-            log "Backing up $config..."
-
-            if test -e $config.bak -o -L $config.bak
-                input 'Backup already exists. Overwrite? [Y/n] ' -n
-                set -l overwrite (sh-read)
-
-                if test "$overwrite" = 'n' -o "$overwrite" = 'N'
-                    log 'Skipping...'
-                else
-                    rm -rf $config.bak
-                    cp -r $config $config.bak
-                end
-            else
-                cp -r $config $config.bak
-            end
-        end
-    else
-        log 'No choice selected. Exiting...'
-        exit 1
-    end
-end
-
-
-# Install AUR helper if not already installed
-if ! pacman -Q $aur_helper &> /dev/null
-    log "$aur_helper not installed. Installing..."
-
-    # Install
-    sudo pacman -S --needed git base-devel $noconfirm
+# Check and install paru
+if ! pacman -Q paru &> /dev/null
+    log "paru not installed. Installing..."
+    sudo pacman -S --needed git base-devel --noconfirm
     cd /tmp
-    git clone https://aur.archlinux.org/$aur_helper.git
-    cd $aur_helper
-    makepkg -si
+    git clone https://aur.archlinux.org/paru.git
+    cd paru
+    makepkg -si --noconfirm
     cd ..
-    rm -rf $aur_helper
-
-    # Setup
-    if test $aur_helper = yay
-        $aur_helper -Y --gendb
-        $aur_helper -Y --devel --save
-    else
-        $aur_helper --gendb
-    end
+    rm -rf paru
+    paru --gendb
+    log "paru installed successfully!"
+else
+    log "paru is already installed."
 end
 
-# Cd into dir
+# Cd into script directory
 cd (dirname (status filename)) || exit 1
 
-# Install metapackage for deps
-log 'Installing metapackage...'
-if test $aur_helper = yay
-    $aur_helper -Bi . $noconfirm
+# Install packages without asking (except steam)
+log 'Installing base packages...'
+
+# Core packages from official repos
+sudo pacman -S --needed vim python python-pip nodejs go rust java-runtime-common \
+    ttf-ms-fonts thunar uwsm wget luarocks unzip cava obs-studio pavucontrol mpv \
+    sddm --noconfirm
+
+# AUR packages
+log 'Installing AUR packages...'
+paru -S --needed nvim zen-browser-bin spicetify-cli spicetify-marketplace-bin \
+    equicord-installer-bin opencode-bin --noconfirm
+
+# Ask for steam installation
+input "Do you want to install Steam? [y/N] " -n
+set -l steam_choice (sh-read)
+if test "$steam_choice" = 'y' -o "$steam_choice" = 'Y'
+    log 'Installing Steam...'
+    sudo pacman -S --needed steam --noconfirm
 else
-    $aur_helper -Ui $noconfirm
+    log 'Skipping Steam installation.'
 end
-fish -c 'rm -f caelestia-meta-*.pkg.tar.zst' 2> /dev/null
+
+# Setup symlinks for configurations
+echo
+log 'Setting up configuration symlinks...'
+
+# NVIM
+if confirm-overwrite $config/nvim
+    log 'Installing nvim config...'
+    ln -s (realpath nvim) $config/nvim
+end
+
+# Zen Browser
+set -l chrome $HOME/.zen/*/chrome
+if confirm-overwrite $chrome/userChrome.css
+    log 'Installing zen userChrome...'
+    ln -s (realpath zen/userChrome.css) $chrome/userChrome.css
+end
+
+# Zen native app
+set -l hosts $HOME/.mozilla/native-messaging-hosts
+set -l lib $HOME/.local/lib/caelestia
+
+if confirm-overwrite $hosts/caelestiafox.json
+    log 'Installing zen native app manifest...'
+    mkdir -p $hosts
+    cp zen/native_app/manifest.json $hosts/caelestiafox.json
+    sed -i "s|{{ \$lib }}|$lib|g" $hosts/caelestiafox.json
+end
+
+if confirm-overwrite $lib/caelestiafox
+    log 'Installing zen native app...'
+    mkdir -p $lib
+    ln -s (realpath zen/native_app/app.fish) $lib/caelestiafox
+end
+
+# Spotify (spicetify)
+log 'Setting up Spotify (spicetify)...'
+sudo chmod a+wr /opt/spotify
+sudo chmod a+wr /opt/spotify/Apps -R
+spicetify backup apply
+
+if confirm-overwrite $config/spicetify
+    log 'Installing spicetify config...'
+    ln -s (realpath spicetify) $config/spicetify
+    spicetify config current_theme caelestia color_scheme caelestia custom_apps marketplace 2> /dev/null
+    spicetify apply
+end
+
+# Discord with Equicord
+log 'Installing Equicord...'
+paru -S --needed discord equicord-installer-bin --noconfirm
+sudo Equilotl -install -location /opt/discord
+sudo Equilotl -install-openasar -location /opt/discord
+paru -Rns equicord-installer-bin --noconfirm
+
+# SDDM setup
+log 'Setting up SDDM...'
+sudo systemctl enable sddm.service
+
+# Create symlink for SDDM config in /etc
+if test -d sddm.conf.d
+    log 'Linking SDDM configuration to /etc/sddm.conf.d/'
+    sudo mkdir -p /etc/sddm.conf.d
+    for file in sddm.conf.d/*
+        set -l filename (basename $file)
+        if test -e /etc/sddm.conf.d/$filename
+            log "/etc/sddm.conf.d/$filename already exists. Backing up..."
+            sudo mv /etc/sddm.conf.d/$filename /etc/sddm.conf.d/$filename.bak
+        end
+        sudo ln -sf (realpath $file) /etc/sddm.conf.d/$filename
+    end
+end
+
+# Install metapackage for deps (if exists)
+if test -f PKGBUILD
+    log 'Installing metapackage...'
+    paru -Ui --noconfirm
+    fish -c 'rm -f caelestia-meta-*.pkg.tar.zst' 2> /dev/null
+end
 
 # Install hypr* configs
 if confirm-overwrite $config/hypr
     log 'Installing hypr* configs...'
     ln -s (realpath hypr) $config/hypr
-    hyprctl reload
+    if command -v hyprctl &> /dev/null
+        hyprctl reload 2> /dev/null
+    end
 end
 
 # Starship
@@ -202,107 +221,22 @@ if confirm-overwrite $config/btop
     ln -s (realpath btop) $config/btop
 end
 
-# Install spicetify
-if set -q _flag_spotify
-    log 'Installing spotify (spicetify)...'
-
-    set -l has_spicetify (pacman -Q spicetify-cli 2> /dev/null)
-    $aur_helper -S --needed spotify spicetify-cli spicetify-marketplace-bin $noconfirm
-
-    # Set permissions and init if new install
-    if test -z "$has_spicetify"
-        sudo chmod a+wr /opt/spotify
-        sudo chmod a+wr /opt/spotify/Apps -R
-        spicetify backup apply
-    end
-
-    # Install configs
-    if confirm-overwrite $config/spicetify
-        log 'Installing spicetify config...'
-        ln -s (realpath spicetify) $config/spicetify
-
-        # Set spicetify configs
-        spicetify config current_theme caelestia color_scheme caelestia custom_apps marketplace 2> /dev/null
-        spicetify apply
-    end
-end
-
-# Install vscode
-if set -q _flag_vscode
-    test "$_flag_vscode" = 'code' && set -l prog 'code' || set -l prog 'codium'
-    test "$_flag_vscode" = 'code' && set -l packages 'code' || set -l packages 'vscodium-bin' 'vscodium-bin-marketplace'
-    test "$_flag_vscode" = 'code' && set -l folder 'Code' || set -l folder 'VSCodium'
-    set -l folder $config/$folder/User
-
-    log "Installing vs$prog..."
-    $aur_helper -S --needed $packages $noconfirm
-
-    # Install configs
-    if confirm-overwrite $folder/settings.json && confirm-overwrite $folder/keybindings.json && confirm-overwrite $config/$prog-flags.conf
-        log "Installing vs$prog config..."
-        ln -s (realpath vscode/settings.json) $folder/settings.json
-        ln -s (realpath vscode/keybindings.json) $folder/keybindings.json
-        ln -s (realpath vscode/flags.conf) $config/$prog-flags.conf
-
-        # Install extension
-        $prog --install-extension vscode/caelestia-vscode-integration/caelestia-vscode-integration-*.vsix
-    end
-end
-
-# Install discord
-if set -q _flag_discord
-    log 'Installing discord...'
-    $aur_helper -S --needed discord equicord-installer-bin $noconfirm
-
-    # Install OpenAsar and Equicord
-    sudo Equilotl -install -location /opt/discord
-    sudo Equilotl -install-openasar -location /opt/discord
-
-    # Remove installer
-    $aur_helper -Rns equicord-installer-bin $noconfirm
-end
-
-# Install zen
-if set -q _flag_zen
-    log 'Installing zen...'
-    $aur_helper -S --needed zen-browser-bin $noconfirm
-
-    # Install userChrome css
-    set -l chrome $HOME/.zen/*/chrome
-    if confirm-overwrite $chrome/userChrome.css
-        log 'Installing zen userChrome...'
-        ln -s (realpath zen/userChrome.css) $chrome/userChrome.css
-    end
-
-    # Install native app
-    set -l hosts $HOME/.mozilla/native-messaging-hosts
-    set -l lib $HOME/.local/lib/caelestia
-
-    if confirm-overwrite $hosts/caelestiafox.json
-        log 'Installing zen native app manifest...'
-        mkdir -p $hosts
-        cp zen/native_app/manifest.json $hosts/caelestiafox.json
-        sed -i "s|{{ \$lib }}|$lib|g" $hosts/caelestiafox.json
-    end
-
-    if confirm-overwrite $lib/caelestiafox
-        log 'Installing zen native app...'
-        mkdir -p $lib
-        ln -s (realpath zen/native_app/app.fish) $lib/caelestiafox
-    end
-
-    # Prompt user to install extension
-    log 'Please install the CaelestiaFox extension from https://addons.mozilla.org/en-US/firefox/addon/caelestiafox if you have not already done so.'
-end
-
 # Generate scheme stuff if needed
 if ! test -f $state/caelestia/scheme.json
-    caelestia scheme set -n shadotheme
-    sleep .5
-    hyprctl reload
+    if command -v caelestia &> /dev/null
+        caelestia scheme set -n shadotheme
+        sleep .5
+        if command -v hyprctl &> /dev/null
+            hyprctl reload 2> /dev/null
+        end
+    end
 end
 
-# Start the shell
-caelestia shell -d > /dev/null
+# Start the shell if caelestia is available
+if command -v caelestia &> /dev/null
+    caelestia shell -d > /dev/null 2>&1
+end
 
-log 'Done!'
+echo
+log 'Installation complete!'
+log 'Please reboot your system to apply all changes.'
