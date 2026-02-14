@@ -119,16 +119,6 @@ else
     log 'Skipping Steam installation.'
 end
 
-# Setup symlinks for configurations
-echo
-log 'Setting up configuration symlinks...'
-
-# NVIM
-if confirm-overwrite $config/nvim
-    log 'Installing nvim config...'
-    ln -s (realpath nvim) $config/nvim
-end
-
 # Discord with Equicord - Based on official script approach
 log 'Installing Discord with Equicord...'
 
@@ -144,6 +134,16 @@ else if command -v equicord-installer &> /dev/null
     $aur_helper -Rns equicord-installer-bin --noconfirm
 else
     log 'Warning: Equicord installer not found. Please install Equicord manually.'
+end
+
+# Setup symlinks for configurations
+echo
+log 'Setting up configuration symlinks...'
+
+# NVIM
+if confirm-overwrite $config/nvim
+    log 'Installing nvim config...'
+    ln -s (realpath nvim) $config/nvim
 end
 
 # SDDM setup
@@ -207,6 +207,12 @@ end
 if confirm-overwrite $config/btop
     log 'Installing btop config...'
     ln -s (realpath btop) $config/btop
+end
+
+# Caelestia
+if confirm-overwrite $config/caelestia
+    log 'Installing caelestia configs...'
+    ln -s (realpath caelestia) $config/caelestia
 end
 
 # Generate scheme stuff if needed

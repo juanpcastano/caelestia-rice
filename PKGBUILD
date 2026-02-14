@@ -4,14 +4,15 @@ pkgver=1.0.0
 pkgrel=1
 pkgdesc="Metapackage for Caelestia rice dependencies"
 arch=('any')
-url="https://github.com/caelestia-rice"
-license=('MIT')
+url="https://github.com/juanpcastano/caelestia-rice"
+license=('GPL-3.0')
 depends=(
     # Core tools
     'vim'
     'neovim'
     'wget'
     'unzip'
+    'openssh'
     
     # Programming languages and runtimes
     'python'
@@ -74,6 +75,7 @@ depends=(
     'papirus-icon-theme'
     'qt5ct-kde'
     'qt6ct-kde'
+    'graphite-cursor-theme-git'
     
     # Fonts
     'ttf-jetbrains-mono-nerd'
