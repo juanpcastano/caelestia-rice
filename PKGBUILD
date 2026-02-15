@@ -1,5 +1,5 @@
 # Maintainer: Your Name <your.email@example.com>
-pkgname=caelestia-meta
+pkgname=caelestia-rice
 pkgver=1.0.0
 pkgrel=1
 pkgdesc="Metapackage for Caelestia rice dependencies"
@@ -13,7 +13,7 @@ depends=(
     'wget'
     'unzip'
     'openssh'
-    
+
     # Programming languages and runtimes
     'python'
     'python-pip'
@@ -23,65 +23,65 @@ depends=(
     'rust'
     'jdk-openjdk'
     'luarocks'
-    
+
     # System and WM
     'thunar'
     'uwsm'
-    
+
     # Audio/Video
     'cava'
     'obs-studio'
     'pavucontrol'
     'mpv'
-    
+
     # Display manager
     'sddm'
-    
+
     # Caelestia components
     'caelestia-cli'
     'caelestia-shell'
-    
+
     # Hyprland ecosystem
     'hyprland'
     'xdg-desktop-portal-hyprland'
     'xdg-desktop-portal-gtk'
     'hyprpicker'
-    
+
     # Clipboard and utilities
     'wl-clipboard'
     'cliphist'
     'inotify-tools'
     'app2unit'
-    
+
     # Audio
     'wireplumber'
-    
+
     # System utilities
     'trash-cli'
-    
+
     # Terminal and shell
     'foot'
     'fish'
-    
+
     # CLI tools
     'eza'
     'fastfetch'
     'starship'
     'btop'
     'jq'
-    
+
     # Theming
     'adw-gtk-theme'
     'papirus-icon-theme'
     'qt5ct-kde'
     'qt6ct-kde'
     'graphite-cursor-theme-git'
-    
+
     # Fonts
     'ttf-jetbrains-mono-nerd'
-    
+
     # Office
-    'libreoffice'
+    'libreoffice-fresh'
 )
 optdepends=(
     'steam: Gaming platform (requires multilib repository)'
