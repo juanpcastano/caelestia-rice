@@ -79,6 +79,10 @@ depends=(
 
     # Fonts
     'ttf-jetbrains-mono-nerd'
+    'noto-fonts'
+    'noto-fonts-cjk'
+    'noto-fonts-emoji'
+    'noto-fonts-extra'
 
     # Office
     'libreoffice-fresh'
