@@ -54,6 +54,7 @@ Reboot your system after installation.
 - discord
 - equicord-installer-bin
 - opencode
+- rclone
 
 ### Steam (optional)
 

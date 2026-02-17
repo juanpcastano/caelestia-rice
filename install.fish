@@ -90,13 +90,13 @@ cd (dirname (status filename)) || exit 1
 if test -f PKGBUILD
     log 'Installing metapackage...'
     $aur_helper -Ui --noconfirm
-    fish -c 'rm -f caelestia-meta-*.pkg.tar.zst' 2> /dev/null
+    fish -c 'rm -f caelestia-rice-*.pkg.tar.zst' 2> /dev/null
 end
 
 # AUR packages
 log 'Installing AUR packages...'
 $aur_helper -S --needed ttf-ms-fonts brave-bin spotify \
-    discord equicord-installer-bin opencode --noconfirm
+    discord equicord-installer-bin opencode rclone --noconfirm
 
 # Ask for steam installation
 input "Do you want to install Steam? [y/N] " -n
