@@ -69,6 +69,7 @@ depends=(
     'starship'
     'btop'
     'jq'
+    'tree-sitter-cli'
 
     # Theming
     'adw-gtk-theme'
