@@ -89,7 +89,7 @@ cd (dirname (status filename)) || exit 1
 # Install metapackage for deps
 if test -f PKGBUILD
     log 'Installing metapackage...'
-    $aur_helper -Ui --noconfirm
+    $aur_helper -U . --noconfirm
     fish -c 'rm -f caelestia-rice-*.pkg.tar.zst' 2> /dev/null
 end
 
