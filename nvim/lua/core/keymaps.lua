@@ -56,7 +56,7 @@ vim.keymap.set('n', '<C-h>', ':wincmd h<CR>', vim.tbl_extend('force', opts, { de
 vim.keymap.set('n', '<C-l>', ':wincmd l<CR>', vim.tbl_extend('force', opts, { desc = 'Navigate to split right' }))
 
 -- Toggle line wrapping
-vim.keymap.set('n', '<leader>z', '<cmd>set wrap!<CR>', vim.tbl_extend('force', opts, { desc = 'Toggle line wrapping' }))
+vim.keymap.set('n', '<leader>tz', '<cmd>set wrap!<CR>', vim.tbl_extend('force', opts, { desc = 'Toggle line wrapping' }))
 
 -- Stay in indent mode
 vim.keymap.set('v', '<', '<gv', vim.tbl_extend('force', opts, { desc = 'Indent left' }))
@@ -75,7 +75,7 @@ vim.keymap.set('n', '<leader>j', '*``cgn', vim.tbl_extend('force', opts, { desc 
 -- Toggle diagnostics
 local diagnostics_active = true
 
-vim.keymap.set('n', '<leader>do', function()
+vim.keymap.set('n', '<leader>td', function()
     diagnostics_active = not diagnostics_active
 
     if diagnostics_active then
