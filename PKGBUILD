@@ -13,6 +13,7 @@ depends=(
     'wget'
     'unzip'
     'openssh'
+    'tmux'
 
     # Programming languages and runtimes
     'python'

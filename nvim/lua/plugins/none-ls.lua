@@ -24,7 +24,7 @@ return {
 
         local sources = {
             diagnostics.checkmake,
-            formatting.prettier.with { filetypes = { 'html', 'json', 'yaml', 'markdown' } },
+            formatting.prettier,
             formatting.stylua,
             formatting.goimports,
             formatting.shfmt.with { args = { '-i', '4' } },
@@ -37,19 +37,18 @@ return {
         null_ls.setup {
             -- debug = true, -- Enable debug mode. Inspect logs with :NullLsLog.
             sources = sources,
-            -- you can reuse a shared lspconfig on_attach callback here
-            on_attach = function(client, bufnr)
-                if client:supports_method 'textDocument/formatting' then
-                    vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
-                    vim.api.nvim_create_autocmd('BufWritePre', {
-                        group = augroup,
-                        buffer = bufnr,
-                        callback = function()
-                            vim.lsp.buf.format { async = false }
-                        end,
-                    })
-                end
-            end,
         }
+
+        vim.api.nvim_create_autocmd('BufWritePre', {
+            group = augroup,
+            callback = function()
+                vim.lsp.buf.format {
+                    async = false,
+                    filter = function(client)
+                        return client.name == "null-ls"
+                    end,
+                }
+            end,
+        })
     end,
 }

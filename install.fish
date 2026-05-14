@@ -215,6 +215,11 @@ if confirm-overwrite $config/caelestia
     ln -s (realpath caelestia) $config/caelestia
 end
 
+if confirm-overwrite $config/tmux
+    log 'Installing tmux configs...'
+    ln -s (realpath tmux) $config/tmux
+end
+
 # Generate scheme stuff if needed
 if ! test -f $state/caelestia/scheme.json
     if command -v caelestia &> /dev/null

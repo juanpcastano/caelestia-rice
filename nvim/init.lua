@@ -28,6 +28,8 @@ require('lazy').setup {
     require 'plugins.alpha',
     require 'plugins.indent-blankline',
     require 'plugins.misc',
+    require 'plugins.which-key',
+    require 'plugins.neoscroll',
     require 'plugins.comment',
     require 'plugins.ts-autotag',
 }
