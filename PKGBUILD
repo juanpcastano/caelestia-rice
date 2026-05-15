@@ -34,6 +34,8 @@ depends=(
     'obs-studio'
     'pavucontrol'
     'mpv'
+    'droidcam'
+    'v4l2loopback-dc'
 
     # Display manager
     'sddm'
@@ -69,6 +71,9 @@ depends=(
     'fastfetch'
     'starship'
     'btop'
+    'nvtop'
+    'reflector'
+    'udiskie'
     'jq'
     'tree-sitter-cli'
 

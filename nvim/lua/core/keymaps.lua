@@ -4,6 +4,7 @@ vim.g.maplocalleader = ' '
 
 -- Disable the spacebar key's default behavior in Normal and Visual modes
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+vim.keymap.set({ 'n', 'v' }, '<C-Space>', '<Nop>', { silent = true })
 
 -- For conciseness
 local opts = { noremap = true, silent = true }
@@ -45,7 +46,9 @@ vim.keymap.set('n', '<leader>bn', '<cmd> enew <CR>', vim.tbl_extend('force', opt
 
 -- Window management
 vim.keymap.set('n', '<leader>wv', '<C-w>v', vim.tbl_extend('force', opts, { desc = 'Split window vertically' }))
+vim.keymap.set('n', '<leader>w-', '<C-w>v', vim.tbl_extend('force', opts, { desc = 'Split window vertically' }))
 vim.keymap.set('n', '<leader>wh', '<C-w>s', vim.tbl_extend('force', opts, { desc = 'Split window horizontally' }))
+vim.keymap.set('n', '<leader>w\\', '<C-w>s', vim.tbl_extend('force', opts, { desc = 'Split window horizontally' }))
 vim.keymap.set('n', '<leader>we', '<C-w>=', vim.tbl_extend('force', opts, { desc = 'Make split windows equal' }))
 vim.keymap.set('n', '<leader>wx', ':close<CR>', vim.tbl_extend('force', opts, { desc = 'Close split window' }))
 

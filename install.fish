@@ -96,7 +96,7 @@ end
 # AUR packages
 log 'Installing AUR packages...'
 $aur_helper -S --needed ttf-ms-fonts brave-bin spotify \
-    discord equicord-installer-bin opencode rclone --noconfirm
+    discord opencode rclone --noconfirm
 
 # Ask for steam installation
 input "Do you want to install Steam? [y/N] " -n
@@ -117,23 +117,6 @@ if test "$steam_choice" = 'y' -o "$steam_choice" = 'Y'
     sudo pacman -S --needed steam --noconfirm
 else
     log 'Skipping Steam installation.'
-end
-
-# Discord with Equicord - Based on official script approach
-log 'Installing Discord with Equicord...'
-
-# Try Equilotl first (as in official script), fallback to equicord-installer
-if command -v Equilotl &> /dev/null
-    sudo Equilotl -install -location /opt/discord
-    sudo Equilotl -install-openasar -location /opt/discord
-    $aur_helper -Rns equicord-installer-bin --noconfirm
-else if command -v equicord-installer &> /dev/null
-    log 'Using equicord-installer (new command name)...'
-    sudo equicord-installer -install -location /opt/discord
-    sudo equicord-installer -install-openasar -location /opt/discord
-    $aur_helper -Rns equicord-installer-bin --noconfirm
-else
-    log 'Warning: Equicord installer not found. Please install Equicord manually.'
 end
 
 # Setup symlinks for configurations
@@ -218,6 +201,8 @@ end
 if confirm-overwrite $config/tmux
     log 'Installing tmux configs...'
     ln -s (realpath tmux) $config/tmux
+    # install Temux Plugin Manager
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 end
 
 # Generate scheme stuff if needed
