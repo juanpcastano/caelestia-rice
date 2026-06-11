@@ -18,9 +18,6 @@ return {
         vim.api.nvim_create_autocmd('ColorScheme', {
             callback = function()
                 require('transparent').clear_prefix 'lualine_transparent'
-                require('transparent').clear_prefix 'lualine_x'
-                require('transparent').clear_prefix 'lualine_c'
-                require('transparent').clear_prefix 'lualine_transitional_lualine_b'
                 require('transparent').clear_prefix 'BufferLine'
             end,
         })
@@ -28,9 +25,6 @@ return {
         vim.api.nvim_create_autocmd('VimEnter', {
             callback = function()
                 require('transparent').clear_prefix 'lualine_transparent'
-                require('transparent').clear_prefix 'lualine_x'
-                require('transparent').clear_prefix 'lualine_c'
-                require('transparent').clear_prefix 'lualine_transitional_lualine_b'
                 require('transparent').clear_prefix 'BufferLine'
             end,
         })
