@@ -1,5 +1,5 @@
 return {
-    dir = '~/repos/caelestia-nvim',
+    'juanpcastano/caelestia-nvim',
     priority = 1000,
     lazy = false,
     config = function()
