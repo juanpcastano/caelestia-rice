@@ -23,6 +23,7 @@ depends=(
     'go'
     'rust'
     'jdk-openjdk'
+    'maven'
     'luarocks'
 
     # System and WM
