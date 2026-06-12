@@ -14,12 +14,11 @@ send_reset_to_tmux_panes() {
     done
 }
 
-inotifywait -m -e close_write,create "$STATE_DIR" --format '%f' 2>/dev/null | while read -r file; do
+inotifywait -m -e close_write,create "$STATE_DIR" "$STATE_DIR/theme" --format '%w%f' 2>/dev/null | while read -r filepath; do
+    file=$(basename "$filepath")
     if [ "$file" = "sequences.txt" ]; then
-        # Ejecutamos el reset en los TTYs antes de recargar tmux
         send_reset_to_tmux_panes
-
-        # Recargamos tmux para que aplique su propio tema interno de forma limpia
+    elif [ "$file" = "tmux-colors.conf" ]; then
         tmux source-file "$HOME/.config/tmux/tmux.conf" 2>/dev/null
     fi
 done
