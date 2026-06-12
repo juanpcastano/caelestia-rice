@@ -205,6 +205,13 @@ if confirm-overwrite $config/tmux
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 end
 
+# Caelestia scripts
+mkdir -p ~/.local/bin
+if confirm-overwrite ~/.local/bin/caelestia-watcher
+    log 'Installing caelestia-watcher...'
+    ln -s (realpath scripts/caelestia-watcher.sh) ~/.local/bin/caelestia-watcher
+end
+
 # Generate scheme stuff if needed
 if ! test -f $state/caelestia/scheme.json
     if command -v caelestia &> /dev/null
