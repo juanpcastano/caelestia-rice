@@ -1,4 +1,4 @@
-# Maintainer: Your Name <your.email@example.com>
+# Maintainer: Juan Pablo Castaño <juanpcastano@gmail.com>
 pkgname=caelestia-rice
 pkgver=1.0.0
 pkgrel=1
@@ -14,7 +14,6 @@ depends=(
     'unzip'
     'openssh'
     'tmux'
-
     # Programming languages and runtimes
     'python'
     'python-pip'
@@ -25,48 +24,32 @@ depends=(
     'jdk-openjdk'
     'maven'
     'luarocks'
-
     # System and WM
     'thunar'
     'uwsm'
-
     # Audio/Video
     'cava'
     'obs-studio'
     'pavucontrol'
     'mpv'
-    'droidcam'
-    # 'v4l2loopback-dc'
-
     # Display manager
     'sddm'
-
-    # Caelestia components
-    'caelestia-cli'
-    'caelestia-shell'
-
     # Hyprland ecosystem
     'hyprland'
     'xdg-desktop-portal-hyprland'
     'xdg-desktop-portal-gtk'
     'hyprpicker'
-
     # Clipboard and utilities
     'wl-clipboard'
     'cliphist'
     'inotify-tools'
-    'app2unit'
-
     # Audio
     'wireplumber'
-
     # System utilities
     'trash-cli'
-
     # Terminal and shell
     'foot'
     'fish'
-
     # CLI tools
     'eza'
     'fastfetch'
@@ -77,28 +60,21 @@ depends=(
     'udiskie'
     'jq'
     'tree-sitter-cli'
-
     # Theming
     'adw-gtk-theme'
     'papirus-icon-theme'
-    'qt5ct-kde'
-    'qt6ct-kde'
-    'graphite-cursor-theme-git'
-
     # Fonts
     'ttf-jetbrains-mono-nerd'
     'noto-fonts'
     'noto-fonts-cjk'
     'noto-fonts-emoji'
     'noto-fonts-extra'
-
     # Office
     'libreoffice-fresh'
 )
 optdepends=(
     'steam: Gaming platform (requires multilib repository)'
 )
-
 package() {
     # Metapackage - no files to install
     :

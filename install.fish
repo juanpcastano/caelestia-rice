@@ -87,21 +87,31 @@ end
 # Cd into script directory
 cd $script_dir || exit 1
 
-echo "CWD: "(pwd)
-echo "Script dir: "(dirname (status filename))
-ls PKGBUILD 2>&1
-
-# Install metapackage for deps
+# Install metapackage for deps (official repos only)
 if test -f PKGBUILD
     log 'Installing metapackage...'
     makepkg -si --noconfirm
     fish -c 'rm -f caelestia-rice-*.pkg.tar.zst' 2> /dev/null
 end
 
-# AUR packages
+# AUR packages (including ones removed from PKGBUILD)
 log 'Installing AUR packages...'
-$aur_helper -S --needed ttf-ms-fonts brave-bin spotify \
-    discord opencode rclone --noconfirm
+$aur_helper -S --needed \
+    droidcam \
+    v4l2loopback-dc-dkms \
+    caelestia-cli \
+    caelestia-shell \
+    app2unit \
+    qt5ct-kde \
+    qt6ct-kde \
+    graphite-cursor-theme-git \
+    ttf-ms-fonts \
+    brave-bin \
+    spotify \
+    discord \
+    opencode \
+    rclone \
+    --noconfirm
 
 # Ask for steam installation
 input "Do you want to install Steam? [y/N] " -n
@@ -206,7 +216,6 @@ end
 if confirm-overwrite $config/tmux
     log 'Installing tmux configs...'
     ln -s (realpath tmux) $config/tmux
-    # install Temux Plugin Manager
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 end
 
@@ -226,11 +235,6 @@ if ! test -f $state/caelestia/scheme.json
             hyprctl reload 2> /dev/null
         end
     end
-end
-
-# Start the shell if caelestia is available
-if command -v caelestia &> /dev/null
-    caelestia shell -d > /dev/null 2>&1
 end
 
 echo
