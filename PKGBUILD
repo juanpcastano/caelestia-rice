@@ -36,7 +36,7 @@ depends=(
     'pavucontrol'
     'mpv'
     'droidcam'
-    'v4l2loopback-dc'
+    # 'v4l2loopback-dc'
 
     # Display manager
     'sddm'
