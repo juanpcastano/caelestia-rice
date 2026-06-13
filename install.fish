@@ -86,6 +86,10 @@ end
 # Cd into script directory
 cd (dirname (status filename)) || exit 1
 
+echo "CWD: "(pwd)
+echo "Script dir: "(dirname (status filename))
+ls PKGBUILD 2>&1
+
 # Install metapackage for deps
 if test -f PKGBUILD
     log 'Installing metapackage...'

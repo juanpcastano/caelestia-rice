@@ -30,7 +30,8 @@ A complete and elegant Hyprland configuration not meant to be optimal, just give
 
 ```bash
 git clone https://github.com/juanpcastano/caelestia-rice.git ~/.local/share/caelestia-rice
-~/.local/share/caelestia-rice/install.fish
+cd ~/.local/share/caelestia-rice/install.fish
+fish install.fish
 ```
 
 Reboot your system after installation.
@@ -84,102 +85,102 @@ The script automatically installs Equicord on Discord using the official install
 
 ### Launchers and Shell
 
-| Shortcut              | Action                    |
-| --------------------- | ------------------------- |
-| `Super`               | Open launcher             |
-| `Super` + `Key`       | Interrupt launcher        |
-| `Ctrl + Alt + Delete` | Session menu              |
-| `Super + N`           | Clear notifications       |
-| `Super + M`           | Show all panels           |
-| `Super + B`           | Lock screen               |
-| `Super + Alt + B`     | Restore and lock          |
+| Shortcut              | Action              |
+| --------------------- | ------------------- |
+| `Super`               | Open launcher       |
+| `Super` + `Key`       | Interrupt launcher  |
+| `Ctrl + Alt + Delete` | Session menu        |
+| `Super + N`           | Clear notifications |
+| `Super + M`           | Show all panels     |
+| `Super + B`           | Lock screen         |
+| `Super + Alt + B`     | Restore and lock    |
 
 ### Workspaces
 
-| Shortcut                              | Action                                        |
-| ------------------------------------- | --------------------------------------------- |
-| `Super + 1-9,0`                       | Switch to workspace #                         |
-| `Super + Scroll` or `Ctrl+Super + H/L`| Previous/next workspace                       |
-| `Super + Page Up/Down`                | Previous/next workspace                       |
-| `Super + Shift + 1-9,0`               | Move window to workspace #                    |
-| `Super + Shift + H/L`                 | Move window to previous/next workspace        |
+| Shortcut                               | Action                                 |
+| -------------------------------------- | -------------------------------------- |
+| `Super + 1-9,0`                        | Switch to workspace #                  |
+| `Super + Scroll` or `Ctrl+Super + H/L` | Previous/next workspace                |
+| `Super + Page Up/Down`                 | Previous/next workspace                |
+| `Super + Shift + 1-9,0`                | Move window to workspace #             |
+| `Super + Shift + H/L`                  | Move window to previous/next workspace |
 
 ### Windows
 
-| Shortcut                 | Action                                      |
-| ------------------------ | ------------------------------------------- |
-| `Super + H/J/K/L`        | Move focus (left/down/up/right)             |
-| `Super + Alt + H/J/K/L`  | Move window                                 |
-| `Super + Z` + drag       | Move window with mouse                      |
-| `Super + X` + drag       | Resize window with mouse                    |
-| `Super + Left click`     | Move window                                 |
-| `Super + Right click`    | Resize window                               |
-| `Super + -/+`            | Adjust split ratio                          |
-| `Super + P`              | Toggle floating window                      |
-| `Super + F`              | Fullscreen                                  |
-| `Super + Alt + F`        | Fullscreen with borders                     |
-| `Super + Alt + P`        | Picture-in-Picture mode                     |
-| `Super + C`              | Close active window                         |
-| `Ctrl + Super + \`       | Center window                               |
-| `Ctrl + Super + Alt + \` | Center and resize (55% x 70%)               |
+| Shortcut                 | Action                          |
+| ------------------------ | ------------------------------- |
+| `Super + H/J/K/L`        | Move focus (left/down/up/right) |
+| `Super + Alt + H/J/K/L`  | Move window                     |
+| `Super + Z` + drag       | Move window with mouse          |
+| `Super + X` + drag       | Resize window with mouse        |
+| `Super + Left click`     | Move window                     |
+| `Super + Right click`    | Resize window                   |
+| `Super + -/+`            | Adjust split ratio              |
+| `Super + P`              | Toggle floating window          |
+| `Super + F`              | Fullscreen                      |
+| `Super + Alt + F`        | Fullscreen with borders         |
+| `Super + Alt + P`        | Picture-in-Picture mode         |
+| `Super + C`              | Close active window             |
+| `Ctrl + Super + \`       | Center window                   |
+| `Ctrl + Super + Alt + \` | Center and resize (55% x 70%)   |
 
 ### Applications
 
-| Shortcut    | Action                    |
-| ----------- | ------------------------- |
-| `Super + T` | Terminal (Foot)           |
-| `Super + W` | Browser (Brave)           |
-| `Super + E` | File Manager (Thunar)     |
+| Shortcut    | Action                |
+| ----------- | --------------------- |
+| `Super + T` | Terminal (Foot)       |
+| `Super + W` | Browser (Brave)       |
+| `Super + E` | File Manager (Thunar) |
 
 ### Screenshots
 
-| Shortcut                  | Action                                    |
-| ------------------------- | ----------------------------------------- |
-| `Print`                   | Full screenshot → clipboard               |
-| `Super + Shift + S`       | Capture region                            |
-| `Super + Shift + Alt + S` | Capture region (freeze screen)            |
-| `Ctrl + Alt + R`          | Record screen                             |
-| `Super + Alt + R`         | Record screen with audio                  |
-| `Super + Shift + Alt + R` | Record region                             |
+| Shortcut                  | Action                         |
+| ------------------------- | ------------------------------ |
+| `Print`                   | Full screenshot → clipboard    |
+| `Super + Shift + S`       | Capture region                 |
+| `Super + Shift + Alt + S` | Capture region (freeze screen) |
+| `Ctrl + Alt + R`          | Record screen                  |
+| `Super + Alt + R`         | Record screen with audio       |
+| `Super + Shift + Alt + R` | Record region                  |
 
 ### Clipboard and Emoji
 
-| Shortcut                 | Action                                     |
-| ------------------------ | ------------------------------------------ |
-| `Super + V`              | Clipboard history                          |
-| `Super + Alt + V`        | Clipboard history (delete item)            |
-| `Super + .`              | Emoji picker                               |
-| `Ctrl + Shift + Alt + V` | Paste last item (alternative)              |
-| `Super + Shift + C`      | Color picker                               |
+| Shortcut                 | Action                          |
+| ------------------------ | ------------------------------- |
+| `Super + V`              | Clipboard history               |
+| `Super + Alt + V`        | Clipboard history (delete item) |
+| `Super + .`              | Emoji picker                    |
+| `Ctrl + Shift + Alt + V` | Paste last item (alternative)   |
+| `Super + Shift + C`      | Color picker                    |
 
 ### Brightness and Volume (Multimedia Keys)
 
-| Shortcut                           | Action              |
-| ---------------------------------- | ------------------- |
+| Shortcut                           | Action                       |
+| ---------------------------------- | ---------------------------- |
 | `XF86MonBrightnessUp/Down`         | Increase/Decrease brightness |
 | `XF86AudioRaiseVolume/LowerVolume` | Increase/Decrease volume     |
-| `XF86AudioMute`                    | Mute output         |
-| `XF86AudioMicMute`                 | Mute microphone     |
-| `Super + Shift + M`                | Mute output         |
+| `XF86AudioMute`                    | Mute output                  |
+| `XF86AudioMicMute`                 | Mute microphone              |
+| `Super + Shift + M`                | Mute output                  |
 
 ### Media (Multimedia Control)
 
-| Shortcut               | Action          |
-| ---------------------- | --------------- |
-| `Ctrl + Super + Space` | Play/Pause      |
-| `XF86AudioPlay/Pause`  | Play/Pause      |
-| `Ctrl + Super + =`     | Next track      |
-| `XF86AudioNext`        | Next track      |
-| `Ctrl + Super + -`     | Previous track  |
-| `XF86AudioPrev`        | Previous track  |
-| `XF86AudioStop`        | Stop            |
+| Shortcut               | Action         |
+| ---------------------- | -------------- |
+| `Ctrl + Super + Space` | Play/Pause     |
+| `XF86AudioPlay/Pause`  | Play/Pause     |
+| `Ctrl + Super + =`     | Next track     |
+| `XF86AudioNext`        | Next track     |
+| `Ctrl + Super + -`     | Previous track |
+| `XF86AudioPrev`        | Previous track |
+| `XF86AudioStop`        | Stop           |
 
 ### Shell and Restart
 
-| Shortcut                   | Action          |
-| -------------------------- | --------------- |
-| `Ctrl + Super + Shift + R` | Kill shell      |
-| `Ctrl + Super + Alt + R`   | Restart shell   |
+| Shortcut                   | Action        |
+| -------------------------- | ------------- |
+| `Ctrl + Super + Shift + R` | Kill shell    |
+| `Ctrl + Super + Alt + R`   | Restart shell |
 
 ## 📝 Manual Installation
 
