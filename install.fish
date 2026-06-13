@@ -50,6 +50,7 @@ end
 set -l aur_helper paru
 set -q XDG_CONFIG_HOME && set -l config $XDG_CONFIG_HOME || set -l config $HOME/.config
 set -q XDG_STATE_HOME && set -l state $XDG_STATE_HOME || set -l state $HOME/.local/state
+set -l script_dir (dirname (realpath (status filename)))
 
 # ASCII Art and greeting
 set_color magenta
@@ -84,7 +85,7 @@ else
 end
 
 # Cd into script directory
-cd (dirname (status filename)) || exit 1
+cd $script_dir || exit 1
 
 echo "CWD: "(pwd)
 echo "Script dir: "(dirname (status filename))
