@@ -90,6 +90,7 @@ cd $script_dir || exit 1
 # Install metapackage for deps (official repos only)
 if test -f PKGBUILD
     log 'Installing metapackage...'
+    sudo pacman -Sy --noconfirm
     makepkg -si --noconfirm
     fish -c 'rm -f caelestia-rice-*.pkg.tar.zst' 2> /dev/null
 end
