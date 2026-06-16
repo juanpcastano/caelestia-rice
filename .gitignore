@@ -13,3 +13,5 @@
 
 .SRCINFO
 caelestia-rice-*.pkg.tar.zst
+
+pkg/
