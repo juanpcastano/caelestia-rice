@@ -19,3 +19,10 @@ if status is-interactive
         echo -en "\e]133;A\e\\"
     end
 end
+
+# pnpm
+set -gx PNPM_HOME "/home/kipi/.local/share/pnpm"
+if not string match -q -- $PNPM_HOME $PATH
+  set -gx PATH "$PNPM_HOME" $PATH
+end
+# pnpm end
