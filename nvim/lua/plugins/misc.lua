@@ -33,4 +33,9 @@ return {
             require('colorizer').setup()
         end,
     },
+    {
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {},
+        dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- o 'nvim-tree/nvim-web-devicons'
+    },
 }
