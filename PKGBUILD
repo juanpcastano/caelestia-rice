@@ -60,6 +60,8 @@ depends=(
     'udiskie'
     'jq'
     'tree-sitter-cli'
+    'lazygit'
+    'docker'
     # Theming
     'adw-gtk-theme'
     'papirus-icon-theme'

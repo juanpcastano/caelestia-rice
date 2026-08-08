@@ -112,7 +112,20 @@ $aur_helper -S --needed \
     discord \
     opencode \
     rclone \
+    lazysql \
+    lazydocker \
+    postman \
     --noconfirm
+
+# Docker setup
+if command -v docker &> /dev/null
+    log 'Setting up Docker...'
+    sudo systemctl enable docker.service
+    sudo systemctl start docker.service
+    sudo usermod -aG docker $USER
+    log 'Docker service enabled and started. User added to docker group.'
+    log 'Run "newgrp docker" to apply group changes immediately, or log out and back in.'
+end
 
 # Ask for steam installation
 input "Do you want to install Steam? [y/N] " -n
