@@ -191,6 +191,12 @@ if confirm-overwrite $config/starship.toml
     ln -s (realpath starship.toml) $config/starship.toml
 end
 
+# Opencode
+if confirm-overwrite $config/opencode/opencode.jsonc
+    log 'Installing opencode config...'
+    ln -s (realpath opencode/opencode.jsonc) $config/opencode/opencode.jsonc
+end
+
 # Foot
 if confirm-overwrite $config/foot
     log 'Installing foot config...'
