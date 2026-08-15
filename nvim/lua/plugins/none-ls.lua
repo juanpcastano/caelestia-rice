@@ -41,13 +41,29 @@ return {
 
         vim.api.nvim_create_autocmd('BufWritePre', {
             group = augroup,
-            callback = function()
-                vim.lsp.buf.format {
+            callback = function(args)
+                local format_opts = {
                     async = false,
+                    bufnr = args.buf,
                     filter = function(client)
-                        return client.name == "null-ls"
+                        -- Prioritize none-ls when available, otherwise allow any formatter
+                        local has_none_ls = #vim.lsp.get_clients({ name = 'null-ls', bufnr = args.buf }) > 0
+                        if has_none_ls then
+                            return client.name == 'null-ls'
+                        end
+                        return true
                     end,
                 }
+
+                -- Force 2-space indentation for XML via LSP FormattingOptions
+                if vim.bo[args.buf].filetype == 'xml' then
+                    format_opts.formatting_options = {
+                        tabSize = 2,
+                        insertSpaces = true,
+                    }
+                end
+
+                vim.lsp.buf.format(format_opts)
             end,
         })
     end,

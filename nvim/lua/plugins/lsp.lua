@@ -157,6 +157,7 @@ return {
             dockerls = {},
             sqlls = {},
             jdtls = {},
+            lemminx = {},
             terraformls = {},
             gopls = {},
             rust_analyzer = {},
