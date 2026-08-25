@@ -193,6 +193,9 @@ return {
         })
         require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
+        local lombok_path = vim.fn.stdpath 'data' .. '/mason/packages/jdtls/lombok.jar'
+        vim.env.JDTLS_JVM_ARGS = '-javaagent:' .. lombok_path
+
         for server, cfg in pairs(servers) do
             -- For each LSP server (cfg), we merge:
             -- 1. A fresh empty table (to avoid mutating capabilities globally)

@@ -62,6 +62,7 @@ depends=(
     'tree-sitter-cli'
     'lazygit'
     'docker'
+    'docker-compose'
     # Theming
     'adw-gtk-theme'
     'papirus-icon-theme'
