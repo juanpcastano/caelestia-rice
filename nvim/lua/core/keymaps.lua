@@ -42,7 +42,27 @@ vim.keymap.set('n', '<Right>', ':vertical resize -2<CR>', vim.tbl_extend('force'
 vim.keymap.set('n', '<C-Tab>', ':bnext<CR>', vim.tbl_extend('force', opts, { desc = 'Next buffer' }))
 vim.keymap.set('n', '<C-S-Tab>', ':bprevious<CR>', vim.tbl_extend('force', opts, { desc = 'Previous buffer' }))
 vim.keymap.set('n', '<leader>bx', ':Bdelete!<CR>', vim.tbl_extend('force', opts, { desc = 'Close buffer' }))
+vim.keymap.set('n', '<leader>bX', function()
+    for _, b in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.bo[b].buflisted then vim.cmd('Bdelete! ' .. b) end
+    end
+end, vim.tbl_extend('force', opts, { desc = 'Close all buffers' }))
+vim.keymap.set('n', '<leader>bo', function()
+    local cur = vim.api.nvim_get_current_buf()
+    for _, b in ipairs(vim.api.nvim_list_bufs()) do
+        if b ~= cur and vim.bo[b].buflisted then vim.cmd('Bdelete! ' .. b) end
+    end
+end, vim.tbl_extend('force', opts, { desc = 'Close other buffers' }))
 vim.keymap.set('n', '<leader>bn', '<cmd> enew <CR>', vim.tbl_extend('force', opts, { desc = 'New buffer' }))
+vim.keymap.set('n', '<leader>bp', function()
+    vim.bo.bufhidden = 'hide'
+    vim.notify('Buffer pinned', vim.log.levels.INFO)
+end, vim.tbl_extend('force', opts, { desc = 'Pin buffer' }))
+vim.keymap.set('n', '<leader>br', function()
+    vim.cmd 'checktime'
+    vim.cmd 'e'
+    vim.notify('Buffer refreshed', vim.log.levels.INFO)
+end, vim.tbl_extend('force', opts, { desc = 'Refresh buffer' }))
 
 -- Window management
 vim.keymap.set('n', '<leader>wv', '<C-w>v', vim.tbl_extend('force', opts, { desc = 'Split window vertically' }))

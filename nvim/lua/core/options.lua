@@ -37,6 +37,7 @@ vim.o.timeoutlen = 500 -- Time to wait for a mapped sequence to complete (in mil
 vim.o.backup = false -- Creates a backup file (default: false)
 vim.o.writebackup = false -- If a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited (default: true)
 vim.o.undofile = true -- Save undo history (default: false)
+vim.o.autoread = true -- Reload files changed outside of Neovim (default: false)
 vim.o.completeopt = 'menuone,noselect' -- Set completeopt to have a better completion experience (default: 'menu,preview')
 vim.opt.shortmess:append 'c' -- Don't give |ins-completion-menu| messages (default: does not include 'c')
 vim.opt.iskeyword:append '-' -- Hyphenated words recognized by searches (default: does not include '-')
