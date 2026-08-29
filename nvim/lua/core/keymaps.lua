@@ -6,6 +6,15 @@ vim.g.maplocalleader = ' '
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set({ 'n', 'v' }, '<C-Space>', '<Nop>', { silent = true })
 
+-- Clear Neovim 0.11+ default `gr` prefix LSP keymaps that conflict with our
+-- custom `gr` mapping (telescope.lsp_references). These defaults make `gr` a
+-- prefix, so pressing `gr` waits for another key and `grr` shadows our map.
+-- We have our own equivalents (gr, gI, <leader>rn, <leader>ca, <leader>td...).
+for _, lhs in ipairs({ 'grn', 'gra', 'grx', 'grr', 'gri', 'grt' }) do
+    pcall(vim.keymap.del, 'n', lhs)
+    pcall(vim.keymap.del, 'x', lhs)
+end
+
 -- For conciseness
 local opts = { noremap = true, silent = true }
 
