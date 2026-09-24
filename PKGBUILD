@@ -19,6 +19,7 @@ depends=(
     'python-pip'
     'nodejs'
     'npm'
+    'pnpm'
     'go'
     'rust'
     'jdk-openjdk'
@@ -27,6 +28,7 @@ depends=(
     # System and WM
     'thunar'
     'uwsm'
+    'upower'
     # Audio/Video
     'cava'
     'obs-studio'
