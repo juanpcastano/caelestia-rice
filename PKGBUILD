@@ -14,6 +14,7 @@ depends=(
     'unzip'
     'openssh'
     'tmux'
+    'less'
     # Programming languages and runtimes
     'python'
     'python-pip'
