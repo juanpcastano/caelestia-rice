@@ -100,8 +100,8 @@ log 'Installing AUR packages...'
 $aur_helper -S --needed \
     droidcam \
     v4l2loopback-dc-dkms \
-    caelestia-cli \
-    caelestia-shell \
+    caelestia-cli-git \
+    caelestia-shell-git \
     app2unit \
     qt5ct-kde \
     qt6ct-kde \
