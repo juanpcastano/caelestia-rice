@@ -112,7 +112,7 @@ $aur_helper -S --needed \
     discord \
     opencode \
     rclone \
-    lazysql \
+    lazysql-bin \
     lazydocker \
     postman \
     --noconfirm
