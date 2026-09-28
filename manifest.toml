@@ -183,9 +183,16 @@ packages = ["brave-bin", "obs-studio", "libreoffice-fresh"]
 
 [[components]]
 name = "spotify"
-packages = ["spotify", "spicetify-cli", "spicetify-marketplace-bin"]
+packages = ["spotify", "spicetify-cli", "spicetify-marketplace-bin", "acl"]
 post_install = [
+    "sudo setfacl -m u:$(id -un):rwx /opt/spotify",
+    "sudo setfacl -R -m u:$(id -un):rwX /opt/spotify/Apps",
     "spicetify config current_theme caelestia color_scheme caelestia custom_apps marketplace",
+    "spicetify backup apply",
+]
+post_update = [
+    "sudo setfacl -m u:$(id -un):rwx /opt/spotify",
+    "sudo setfacl -R -m u:$(id -un):rwX /opt/spotify/Apps",
     "spicetify apply",
 ]
 [[components.entries]]
