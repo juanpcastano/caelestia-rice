@@ -35,7 +35,7 @@ fish install.fish
 
 `install.fish` points the CLI at this repository and runs `caelestia install`. The CLI installs the committed branch from the remote, so commit and push changes before installing them on a new machine. The CLI offers a backup of `~/.config` before deployment.
 
-Most components in `manifest.toml` are enabled by default. `docker` and `sddm` are optional components; enable them with `caelestia install --enable-components docker,sddm` if desired. Installing those packages does not automatically configure their system services.
+Most components in `manifest.toml` are enabled by default. `spotify`, `discord`, `docker`, and `sddm` are optional; enable them with `caelestia install --enable-components spotify,discord` to install Spotify with Spicetify and Equibop with Equicord. Equibop is a separate client and leaves the official Discord installed. Installing Docker or SDDM does not automatically configure their system services.
 
 ## Upstream and personal configuration
 

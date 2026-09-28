@@ -178,7 +178,24 @@ dest = "$XDG_CONFIG_HOME/caelestia/cli.json"
 [[components]]
 name = "apps"
 default = true
-packages = ["brave-bin", "spotify", "discord", "obs-studio", "libreoffice-fresh"]
+packages = ["brave-bin", "obs-studio", "libreoffice-fresh"]
+
+# --- Optional components ---
+
+[[components]]
+name = "spotify"
+packages = ["spotify", "spicetify-cli", "spicetify-marketplace-bin"]
+post_install = [
+    "spicetify config current_theme caelestia color_scheme caelestia custom_apps marketplace",
+    "spicetify apply",
+]
+[[components.entries]]
+src = "spicetify"
+dest = "$XDG_CONFIG_HOME/spicetify"
+
+[[components]]
+name = "discord"
+packages = ["equibop-bin"]
 
 [[components]]
 name = "docker"
