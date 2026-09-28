@@ -26,5 +26,6 @@ end
 hl.bind("SUPER + Space", hl.dsp.global("caelestia:launcher"), { release = true })
 
 hl.on("hyprland.start", function()
+    hl.exec_cmd("systemctl --user start hyprpolkitagent.service")
     hl.exec_cmd("nohup \"$HOME/.local/bin/caelestia-watcher\" >/dev/null 2>&1 &")
 end)

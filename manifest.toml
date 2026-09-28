@@ -69,7 +69,7 @@ dest = "$XDG_CONFIG_HOME/btop"
 [[components]]
 name = "thunar"
 default = true
-packages = ["thunar"]
+packages = ["thunar", "thunar-volman", "gvfs"]
 [[components.entries]]
 src = "thunar"
 dest = "$XDG_CONFIG_HOME/Thunar"
@@ -95,7 +95,7 @@ packages = ["qt5ct-kde", "qt6ct-kde"]
 [[components]]
 name = "auth"
 default = true
-packages = ["gnome-keyring", "polkit-gnome"]
+packages = ["hyprpolkitagent"]
 
 [[components]]
 name = "network"
@@ -149,7 +149,6 @@ dest = "$XDG_CONFIG_HOME/caelestia/templates/tmux-colors.conf"
 
 [[components]]
 name = "uwsm"
-default = true
 packages = ["uwsm"]
 [[components.entries]]
 src = "uwsm"
