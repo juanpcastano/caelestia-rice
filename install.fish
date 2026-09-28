@@ -1,262 +1,114 @@
 #!/usr/bin/env fish
 
-# Check if running as root
+# Bootstrap the official Caelestia CLI, configure it to use this dots repo,
+# then let `caelestia install` process this repository's manifest.toml.
+
 if test (id -u) -eq 0
-    echo "Error: Do not run this script as root or with sudo."
-    echo "The script will use sudo internally when needed."
+    echo "Do not run this script as root; it invokes sudo when required."
     exit 1
 end
 
-# Helper funcs
-function _out -a colour text
-    set_color $colour
-    echo $argv[3..] -- ":: $text"
-    set_color normal
+if not test -f /etc/os-release
+    echo "Cannot identify this distribution (/etc/os-release is missing)."
+    exit 1
 end
 
-function log -a text
-    _out cyan $text $argv[2..]
+source /etc/os-release
+if not string match -q '*arch*' "$ID $ID_LIKE"
+    echo "The Caelestia CLI package installer targets Arch-based distributions."
+    echo "Detected: $PRETTY_NAME"
+    exit 1
 end
 
-function input -a text
-    _out blue $text $argv[2..]
+set script_dir (dirname (realpath (status filename)))
+set repo_url (git -C $script_dir remote get-url origin 2>/dev/null)
+set branch (git -C $script_dir branch --show-current 2>/dev/null)
+
+if test -z "$repo_url"; or test -z "$branch"
+    echo "Run this from a checked-out git clone with an origin remote and a branch."
+    exit 1
 end
 
-function sh-read
-    sh -c 'read a && echo -n "$a"' || exit 1
+# Public GitHub repos should remain cloneable on a fresh machine without an SSH key.
+set repo_url (string replace 'git@github.com:' 'https://github.com/' -- $repo_url)
+
+# Reuse paru/yay when available, otherwise bootstrap paru from the AUR.
+set aur_helper paru
+if not command -v paru >/dev/null; and command -v yay >/dev/null
+    set aur_helper yay
 end
 
-function confirm-overwrite -a path
-    if test -z "$path"
-        return 1
+if not command -v $aur_helper >/dev/null
+    echo "Installing paru (AUR helper)..."
+    sudo pacman -S --needed git base-devel
+    set build_dir (mktemp -d)
+    or exit 1
+    git clone https://aur.archlinux.org/paru.git $build_dir/paru
+    or begin
+        rm -rf $build_dir
+        exit 1
     end
-    
-    if test -e $path -o -L $path
-        input "$path already exists. Overwrite? [Y/n] " -n
-        set -l confirm (sh-read)
-
-        if test "$confirm" = 'n' -o "$confirm" = 'N'
-            log 'Skipping...'
-            return 1
-        else
-            log 'Removing...'
-            rm -rf $path
-        end
+    cd $build_dir/paru
+    makepkg -si
+    set result $status
+    cd $script_dir
+    rm -rf $build_dir
+    if test $result -ne 0
+        exit $result
     end
-    return 0
+    set aur_helper paru
 end
 
-# Variables
-set -l aur_helper paru
-set -q XDG_CONFIG_HOME && set -l config $XDG_CONFIG_HOME || set -l config $HOME/.config
-set -q XDG_STATE_HOME && set -l state $XDG_STATE_HOME || set -l state $HOME/.local/state
-set -l script_dir (dirname (realpath (status filename)))
-
-# ASCII Art and greeting
-set_color magenta
-echo '╭─────────────────────────────────────────────────╮'
-echo '│      ______           __          __  _         │'
-echo '│     / ____/___ ____  / /__  _____/ /_(_)___ _   │'
-echo '│    / /   / __ `/ _ \/ / _ \/ ___/ __/ / __ `/   │'
-echo '│   / /___/ /_/ /  __/ /  __(__  ) /_/ / /_/ /    │'
-echo '│   \____/\__,_/\___/_/\___/____/\__/_/\__,_/     │'
-echo '│                                                 │'
-echo '╰─────────────────────────────────────────────────╯'
-set_color normal
-
-log 'Welcome to the Caelestia rice installer!'
-log 'This script will install and configure your system.'
-echo
-
-# Check and install paru
-if ! pacman -Q $aur_helper &> /dev/null
-    log "$aur_helper not installed. Installing..."
-    sudo pacman -S --needed git base-devel --noconfirm
-    cd /tmp
-    git clone https://aur.archlinux.org/$aur_helper.git
-    cd $aur_helper
-    makepkg -si --noconfirm
-    cd ..
-    rm -rf $aur_helper
-    $aur_helper --gendb
-    log "$aur_helper installed successfully!"
-else
-    log "$aur_helper is already installed."
+if not command -v caelestia >/dev/null
+    $aur_helper -S --needed caelestia-cli
+    or exit $status
 end
 
-# Cd into script directory
-cd $script_dir || exit 1
-
-# Install metapackage for deps (official repos only)
-if test -f PKGBUILD
-    log 'Installing metapackage...'
-    sudo pacman -Sy --noconfirm
-    makepkg -si --noconfirm
-    fish -c 'rm -f caelestia-rice-*.pkg.tar.zst' 2> /dev/null
+# Tell the CLI to clone/update this repository instead of caelestia-dots/caelestia.
+set config_home $XDG_CONFIG_HOME
+if test -z "$config_home"
+    set config_home $HOME/.config
 end
+set cli_config $config_home/caelestia/cli.json
+mkdir -p (dirname $cli_config)
+or exit 1
 
-# AUR packages (including ones removed from PKGBUILD)
-log 'Installing AUR packages...'
-$aur_helper -S --needed \
-    droidcam \
-    v4l2loopback-dc-dkms \
-    caelestia-cli-git \
-    caelestia-shell-git \
-    app2unit \
-    qt5ct-kde \
-    qt6ct-kde \
-    graphite-cursor-theme-git \
-    ttf-ms-fonts \
-    brave-bin \
-    spotify \
-    discord \
-    opencode \
-    rclone \
-    lazysql-bin \
-    lazydocker \
-    postman \
-    --noconfirm
+python3 -c '
+import json, pathlib, sys
+path = pathlib.Path(sys.argv[1])
+try:
+    data = json.loads(path.read_text()) if path.exists() else {}
+except (OSError, json.JSONDecodeError) as exc:
+    raise SystemExit(f"Cannot read {path}: {exc}")
+dots = data.setdefault("dots", {})
+dots["url"], dots["branch"] = sys.argv[2:4]
+path.write_text(json.dumps(data, indent=4) + "\n")
+' $cli_config $repo_url $branch
+or exit $status
 
-# Docker setup
-if command -v docker &> /dev/null
-    log 'Setting up Docker...'
-    sudo systemctl enable docker.service
-    sudo systemctl start docker.service
-    sudo usermod -aG docker $USER
-    log 'Docker service enabled and started. User added to docker group.'
-    log 'Run "newgrp docker" to apply group changes immediately, or log out and back in.'
-end
-
-# Ask for steam installation
-input "Do you want to install Steam? [y/N] " -n
-set -l steam_choice (sh-read)
-if test "$steam_choice" = 'y' -o "$steam_choice" = 'Y'
-    log 'Installing Steam...'
-    
-    # Check if multilib is enabled
-    if ! grep -q '^\[multilib\]' /etc/pacman.conf
-        log 'Enabling [multilib] repository...'
-        sudo sed -i '/^#\[multilib\]/,/^#Include = \/etc\/pacman.d\/mirrorlist$/ { 
-            s/^#\[multilib\]/[multilib]/ 
-            s/^#Include = \/etc\/pacman.d\/mirrorlist$/Include = \/etc\/pacman.d\/mirrorlist/
-        }' /etc/pacman.conf
-        sudo pacman -Sy
+# Older versions of this rice symlinked the whole caelestia config directory
+# into the repo. Convert that to a real directory before the CLI deploys
+# individual managed files, otherwise it would write through the symlink.
+set caelestia_config $config_home/caelestia
+if test -L $caelestia_config
+    set old_config (realpath $caelestia_config)
+    set temp_config (mktemp -d)
+    or exit 1
+    cp -a $old_config/. $temp_config/
+    or begin
+        rm -rf $temp_config
+        exit 1
     end
-    
-    sudo pacman -S --needed steam --noconfirm
-else
-    log 'Skipping Steam installation.'
-end
-
-# Setup symlinks for configurations
-echo
-log 'Setting up configuration symlinks...'
-
-# NVIM
-if confirm-overwrite $config/nvim
-    log 'Installing nvim config...'
-    ln -s (realpath nvim) $config/nvim
-end
-
-# SDDM setup
-log 'Setting up SDDM...'
-sudo systemctl enable sddm.service
-
-# Create symlink for SDDM config in /etc
-if test -d sddm.conf.d
-    log 'Linking SDDM configuration to /etc/sddm.conf.d/'
-    sudo mkdir -p /etc/sddm.conf.d
-    for file in sddm.conf.d/*
-        set -l filename (basename $file)
-        if test -e /etc/sddm.conf.d/$filename
-            log "/etc/sddm.conf.d/$filename already exists. Backing up..."
-            sudo mv /etc/sddm.conf.d/$filename /etc/sddm.conf.d/$filename.bak
-        end
-        sudo ln -sf (realpath $file) /etc/sddm.conf.d/$filename
+    rm $caelestia_config
+    mkdir -p $caelestia_config
+    cp -a $temp_config/. $caelestia_config/
+    set copy_result $status
+    rm -rf $temp_config
+    if test $copy_result -ne 0
+        exit $copy_result
     end
 end
 
-# Install hypr* configs
-if confirm-overwrite $config/hypr
-    log 'Installing hypr* configs...'
-    ln -s (realpath hypr) $config/hypr
-    if command -v hyprctl &> /dev/null
-        hyprctl reload 2> /dev/null
-    end
-end
-
-# Starship
-if confirm-overwrite $config/starship.toml
-    log 'Installing starship config...'
-    ln -s (realpath starship.toml) $config/starship.toml
-end
-
-# Opencode
-if confirm-overwrite $config/opencode/opencode.jsonc
-    log 'Installing opencode config...'
-    ln -s (realpath opencode/opencode.jsonc) $config/opencode/opencode.jsonc
-end
-
-# Foot
-if confirm-overwrite $config/foot
-    log 'Installing foot config...'
-    ln -s (realpath foot) $config/foot
-end
-
-# Fish
-if confirm-overwrite $config/fish
-    log 'Installing fish config...'
-    ln -s (realpath fish) $config/fish
-end
-
-# Fastfetch
-if confirm-overwrite $config/fastfetch
-    log 'Installing fastfetch config...'
-    ln -s (realpath fastfetch) $config/fastfetch
-end
-
-# Uwsm
-if confirm-overwrite $config/uwsm
-    log 'Installing uwsm config...'
-    ln -s (realpath uwsm) $config/uwsm
-end
-
-# Btop
-if confirm-overwrite $config/btop
-    log 'Installing btop config...'
-    ln -s (realpath btop) $config/btop
-end
-
-# Caelestia
-if confirm-overwrite $config/caelestia
-    log 'Installing caelestia configs...'
-    ln -s (realpath caelestia) $config/caelestia
-end
-
-if confirm-overwrite $config/tmux
-    log 'Installing tmux configs...'
-    ln -s (realpath tmux) $config/tmux
-    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-end
-
-# Caelestia scripts
-mkdir -p ~/.local/bin
-if confirm-overwrite ~/.local/bin/caelestia-watcher
-    log 'Installing caelestia-watcher...'
-    ln -s (realpath scripts/caelestia-watcher.sh) ~/.local/bin/caelestia-watcher
-end
-
-# Generate scheme stuff if needed
-if ! test -f $state/caelestia/scheme.json
-    if command -v caelestia &> /dev/null
-        caelestia scheme set -n shadotheme
-        sleep .5
-        if command -v hyprctl &> /dev/null
-            hyprctl reload 2> /dev/null
-        end
-    end
-end
-
-echo
-log 'Installation complete!'
-log 'Please reboot your system to apply all changes.'
+echo "Caelestia CLI will use $repo_url ($branch)."
+echo "Important: the CLI installs the committed remote branch, not uncommitted local edits."
+caelestia install

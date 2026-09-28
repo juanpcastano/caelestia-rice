@@ -1,0 +1,183 @@
+# Manifest consumed by the upstream Caelestia CLI.
+# The CLI's package manager targets Arch-based distributions; it is not a
+# cross-distro provisioning system and does not configure GPU drivers/services.
+
+packages = ["caelestia-shell", "caelestia-cli"]
+post_install = [
+    "test -f ${XDG_STATE_HOME:-$HOME/.local/state}/caelestia/scheme.json || caelestia scheme set -n caelestia",
+    "caelestia shell -d >/dev/null 2>&1 || true",
+]
+post_update = ["caelestia shell -k >/dev/null 2>&1 || true; sleep 1; caelestia shell -d >/dev/null 2>&1 || true"]
+
+[[components]]
+name = "hypr"
+default = true
+packages = ["hyprland", "xdg-desktop-portal-hyprland", "xdg-desktop-portal-gtk"]
+post_install = ["hyprctl reload >/dev/null 2>&1 || true", "chmod +x $HOME/.local/bin/caelestia-watcher"]
+post_update = ["hyprctl reload >/dev/null 2>&1 || true", "chmod +x $HOME/.local/bin/caelestia-watcher"]
+[[components.entries]]
+src = "hypr"
+dest = "$XDG_CONFIG_HOME/hypr"
+[[components.entries]]
+src = "caelestia/hypr-vars.lua"
+dest = "$XDG_CONFIG_HOME/caelestia/hypr-vars.lua"
+[[components.entries]]
+src = "caelestia/hypr-user.lua"
+dest = "$XDG_CONFIG_HOME/caelestia/hypr-user.lua"
+[[components.entries]]
+src = "scripts/caelestia-watcher.sh"
+dest = "$HOME/.local/bin/caelestia-watcher"
+
+[[components]]
+name = "fish"
+default = true
+packages = ["fish", "eza", "zoxide", "direnv"]
+[[components.entries]]
+src = "fish"
+dest = "$XDG_CONFIG_HOME/fish"
+
+[[components]]
+name = "foot"
+default = true
+packages = ["foot"]
+[[components.entries]]
+src = "foot"
+dest = "$XDG_CONFIG_HOME/foot"
+
+[[components]]
+name = "fastfetch"
+default = true
+packages = ["fastfetch"]
+[[components.entries]]
+src = "fastfetch"
+dest = "$XDG_CONFIG_HOME/fastfetch"
+
+[[components]]
+name = "btop"
+default = true
+packages = ["btop"]
+[[components.entries]]
+src = "btop"
+dest = "$XDG_CONFIG_HOME/btop"
+
+[[components]]
+name = "thunar"
+default = true
+packages = ["thunar"]
+[[components.entries]]
+src = "thunar"
+dest = "$XDG_CONFIG_HOME/Thunar"
+
+[[components]]
+name = "starship"
+default = true
+packages = ["starship"]
+[[components.entries]]
+src = "starship.toml"
+dest = "$XDG_CONFIG_HOME/starship.toml"
+
+[[components]]
+name = "gtk"
+default = true
+packages = ["adw-gtk-theme", "papirus-icon-theme"]
+
+[[components]]
+name = "qt"
+default = true
+packages = ["qt5ct-kde", "qt6ct-kde"]
+
+[[components]]
+name = "auth"
+default = true
+packages = ["gnome-keyring", "polkit-gnome"]
+
+[[components]]
+name = "network"
+default = true
+packages = ["networkmanager"]
+
+[[components]]
+name = "bluetooth"
+default = true
+packages = ["bluez", "bluez-utils"]
+
+[[components]]
+name = "pipewire"
+default = true
+packages = ["pipewire", "pipewire-pulse", "pipewire-audio", "pipewire-alsa", "pipewire-jack", "wireplumber"]
+
+[[components]]
+name = "clipboard"
+default = true
+packages = ["wl-clipboard", "cliphist", "ydotool"]
+
+[[components]]
+name = "fonts"
+default = true
+packages = ["noto-fonts", "noto-fonts-cjk", "noto-fonts-emoji", "noto-fonts-extra", "ttf-jetbrains-mono-nerd", "ttf-ms-fonts", "graphite-cursor-theme-git"]
+
+[[components]]
+name = "tools"
+default = true
+packages = ["git", "inotify-tools", "trash-cli", "jq", "lazygit", "hyprpicker", "xdg-user-dirs", "app2unit", "gammastep", "udiskie", "cava", "mpv", "pavucontrol", "fuzzel"]
+post_install = ["xdg-user-dirs-update"]
+
+[[components]]
+name = "nvim"
+default = true
+packages = ["neovim", "python", "python-pip", "nodejs", "npm", "go", "rust", "jdk-openjdk", "luarocks", "tree-sitter-cli"]
+[[components.entries]]
+src = "nvim"
+dest = "$XDG_CONFIG_HOME/nvim"
+
+[[components]]
+name = "tmux"
+default = true
+packages = ["tmux"]
+[[components.entries]]
+src = "tmux"
+dest = "$XDG_CONFIG_HOME/tmux"
+[[components.entries]]
+src = "caelestia/templates/tmux-colors.conf"
+dest = "$XDG_CONFIG_HOME/caelestia/templates/tmux-colors.conf"
+
+[[components]]
+name = "uwsm"
+default = true
+packages = ["uwsm"]
+[[components.entries]]
+src = "uwsm"
+dest = "$XDG_CONFIG_HOME/uwsm"
+
+[[components]]
+name = "opencode"
+default = true
+packages = ["opencode"]
+[[components.entries]]
+src = "opencode"
+dest = "$XDG_CONFIG_HOME/opencode"
+
+[[components]]
+name = "rclone"
+default = true
+packages = ["rclone"]
+
+[[components]]
+name = "caelestia-cli-config"
+default = true
+[[components.entries]]
+src = "caelestia/cli.json"
+dest = "$XDG_CONFIG_HOME/caelestia/cli.json"
+
+[[components]]
+name = "apps"
+default = true
+packages = ["brave-bin", "spotify", "discord", "obs-studio", "libreoffice-fresh"]
+
+[[components]]
+name = "docker"
+packages = ["docker", "docker-compose"]
+
+[[components]]
+name = "sddm"
+packages = ["sddm"]

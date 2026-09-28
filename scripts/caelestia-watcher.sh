@@ -1,5 +1,9 @@
 #!/bin/bash
-STATE_DIR="$HOME/.local/state/caelestia"
+STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+STATE_DIR="$STATE_HOME/caelestia"
+
+mkdir -p "$STATE_DIR/theme"
 
 send_reset_to_tmux_panes() {
     tmux list-panes -a -F '#{pane_tty}' 2>/dev/null | while read -r tty; do
@@ -19,6 +23,6 @@ inotifywait -m -e close_write,create "$STATE_DIR" "$STATE_DIR/theme" --format '%
     if [ "$file" = "sequences.txt" ]; then
         send_reset_to_tmux_panes
     elif [ "$file" = "tmux-colors.conf" ]; then
-        tmux source-file "$HOME/.config/tmux/tmux.conf" 2>/dev/null
+        tmux source-file "$CONFIG_HOME/tmux/tmux.conf" 2>/dev/null
     fi
 done

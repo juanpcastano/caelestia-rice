@@ -15,11 +15,14 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- The Caelestia colorscheme reads the generated scheme.json and watches for
+-- wallpaper/theme changes, so load it from this config rather than a plugin.
+require 'plugins.caelestia'
+
 -- Set up plugins
 require('lazy').setup {
     require 'plugins.neotree',
     require 'plugins.transparent',
-    require 'plugins.colortheme',
     require 'plugins.bufferline',
     require 'plugins.lualine',
     require 'plugins.treesitter',

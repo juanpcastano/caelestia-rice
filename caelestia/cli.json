@@ -1,9 +1,13 @@
 {
+  "dots": {
+    "url": "https://github.com/juanpcastano/caelestia-rice.git",
+    "branch": "main"
+  },
   "theme": {
     "enableTerm": true,
     "enableHypr": true,
     "enableDiscord": true,
-    "enableSpicetify": false,
+    "enableSpicetify": true,
     "enableFuzzel": true,
     "enableBtop": true,
     "enableGtk": true,

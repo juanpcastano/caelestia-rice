@@ -19,67 +19,23 @@ A complete and elegant Hyprland configuration not meant to be optimal, just give
 
 ## 📋 Requirements
 
-- Fish shell
-- Git
-- Base-devel (to build AUR packages)
+- CachyOS, Arch Linux, or another Arch-based distribution
+- Fish and Git
+- An AUR helper (`install.fish` bootstraps `paru` if neither `paru` nor `yay` is installed)
 
-> **⚠️ Important Warning:**
-> The installation script creates symlinks to the configuration files, so **you CANNOT move or delete the repository folder** after installing. It's recommended to clone to `~/.local/share/caelestia-rice`.
+The Caelestia CLI installs packages and deploys the dotfiles described in `manifest.toml`. It does not install GPU drivers or configure system services; handle those through CachyOS/system settings as needed.
 
 ## 🚀 Quick Installation
 
 ```bash
 git clone https://github.com/juanpcastano/caelestia-rice.git ~/.local/share/caelestia-rice
-cd ~/.local/share/caelestia-rice/install.fish
+cd ~/.local/share/caelestia-rice
 fish install.fish
 ```
 
-Reboot your system after installation.
+`install.fish` points the CLI at this repository and runs `caelestia install`. The CLI installs the committed branch from the remote, so commit and push changes before installing them on a new machine. The CLI offers a backup of `~/.config` before deployment.
 
-## 🔧 What the Script Installs
-
-### Official Packages (pacman)
-
-- **Core:** vim, neovim, python, python-pip, nodejs, go, rust, jdk-openjdk, openssh
-- **System:** hyprland, uwsm, xdg-desktop-portal-hyprland, xdg-desktop-portal-gtk, caelestia-cli, caelestia-shell
-- **Apps:** thunar, foot, brave, obs-studio, pavucontrol, mpv, sddm, libreoffice
-- **Tools:** wireplumber, wl-clipboard, cliphist, hyprpicker, inotify-tools, app2unit, trash-cli
-- **Extras:** btop, fastfetch, starship, jq, eza, cava, luarocks, unzip, wget
-- **Theming:** adw-gtk-theme, papirus-icon-theme, qt5ct-kde, qt6ct-kde, ttf-jetbrains-mono-nerd, graphite-cursor-theme-git, noto-fonts, noto-fonts-cjk, noto-fonts-emoji, noto-fonts-extra
-
-### AUR Packages (paru/yay)
-
-- ttf-ms-fonts
-- brave-bin
-- spotify
-- discord
-- equicord-installer-bin
-- opencode
-- rclone
-
-### Steam (optional)
-
-The script asks if you want to install Steam. If you accept:
-
-- Automatically enables the `[multilib]` repository
-- Installs Steam from official repositories
-
-### Configurations Set Up
-
-1. **NVim** - Editor with complete configuration
-2. **Hyprland** - Compositor with all configs
-3. **Fish** - Shell with themes and functions
-4. **Foot** - Terminal emulator
-5. **Starship** - Custom prompt
-6. **Fastfetch** - System information
-7. **UWSM** - Session manager
-8. **Btop** - Resource monitor
-9. **SDDM** - Login manager (automatically enabled)
-10. **Discord** - With Equicord and OpenAsar installed
-
-### Discord with Equicord
-
-The script automatically installs Equicord on Discord using the official installer.
+Most components in `manifest.toml` are enabled by default. `docker` and `sddm` are optional components; enable them with `caelestia install --enable-components docker,sddm` if desired. Installing those packages does not automatically configure their system services.
 
 ## ⌨️ Hyprland Keybindings
 
@@ -87,8 +43,7 @@ The script automatically installs Equicord on Discord using the official install
 
 | Shortcut              | Action              |
 | --------------------- | ------------------- |
-| `Super`               | Open launcher       |
-| `Super` + `Key`       | Interrupt launcher  |
+| `Super + Space`       | Open launcher       |
 | `Ctrl + Alt + Delete` | Session menu        |
 | `Super + N`           | Clear notifications |
 | `Super + M`           | Show all panels     |
@@ -184,67 +139,41 @@ The script automatically installs Equicord on Discord using the official install
 
 ## 📝 Manual Installation
 
-If you prefer to install manually:
-
-### Dependencies
+Install the Caelestia CLI from the AUR, set its dots source to this repository, and run its installer:
 
 ```bash
-# Official packages
-sudo pacman -S hyprland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk \
-    hyprpicker wl-clipboard cliphist inotify-tools app2unit wireplumber \
-    trash-cli foot fish fastfetch starship btop jq eza adw-gtk-theme \
-    papirus-icon-theme qt5ct-kde qt6ct-kde ttf-jetbrains-mono-nerd \
-    graphite-cursor-theme-git noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra \
-    libreoffice vim neovim python python-pip nodejs npm go rust jdk-openjdk \
-    luarocks thunar uwsm cava obs-studio pavucontrol mpv sddm openssh
-
-# From AUR
-paru -S caelestia-cli caelestia-shell
+paru -S caelestia-cli
+mkdir -p ~/.config/caelestia
+cat > ~/.config/caelestia/cli.json <<'EOF'
+{
+  "dots": {
+    "url": "https://github.com/juanpcastano/caelestia-rice.git",
+    "branch": "main"
+  }
+}
+EOF
+caelestia install
 ```
-
-### Configurations
-
-Copy or create symlinks of the folders:
-
-- `hypr/` → `~/.config/hypr/`
-- `foot/` → `~/.config/foot/`
-- `fish/` → `~/.config/fish/`
-- `fastfetch/` → `~/.config/fastfetch/`
-- `uwsm/` → `~/.config/uwsm/`
-- `btop/` → `~/.config/btop/`
-- `nvim/` → `~/.config/nvim/`
-- `starship.toml` → `~/.config/starship.toml`
 
 ## 🔄 Updating
 
-To update the rice:
+Push your changes to the configured branch, then run:
 
 ```bash
-cd ~/.local/share/caelestia
-git pull
-```
-
-Then update AUR packages:
-
-```bash
-paru
+caelestia update
 ```
 
 ## 🐛 Troubleshooting
 
 ### Hyprland won't start
 
-- Verify you didn't move the repository folder
+- Check config diagnostics with `hyprctl configerrors`
 - Check the logs: `hyprctl logs`
 
 ### Shell doesn't appear
 
-- Verify `caelestia` is installed: `which caelestia`
+- Verify `caelestia` is installed: `command -v caelestia`
 - Restart the shell: `Ctrl + Super + Alt + R`
-
-### Discord without Equicord
-
-- Reinstall manually: `sudo equicord-installer -install -location /opt/discord`
 
 ## 📄 License
 
