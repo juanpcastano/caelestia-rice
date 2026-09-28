@@ -13,7 +13,7 @@ A complete and elegant Hyprland configuration not meant to be optimal, just give
 - **Dynamic themes** with automatic color schemes
 - **Integrated configurations** for NVim, Fish, Foot, Starship, Btop and more
 - **Optimized window management** with intuitive keybindings
-- **Integrated launcher** (Super) with quick search
+- **Integrated launcher** (`Super + Space`) with quick search
 - **Screenshots** and integrated recording
 - **Clipboard manager** with history
 
@@ -36,6 +36,22 @@ fish install.fish
 `install.fish` points the CLI at this repository and runs `caelestia install`. The CLI installs the committed branch from the remote, so commit and push changes before installing them on a new machine. The CLI offers a backup of `~/.config` before deployment.
 
 Most components in `manifest.toml` are enabled by default. `docker` and `sddm` are optional components; enable them with `caelestia install --enable-components docker,sddm` if desired. Installing those packages does not automatically configure their system services.
+
+## Upstream and personal configuration
+
+This repository follows the full `caelestia-dots/caelestia` project. Upstream files are merged from the `upstream` Git remote; this fork keeps its own package manifest and personal preferences.
+
+Hyprland modules in `hypr/` follow upstream. Put supported values in `caelestia/hypr-vars.lua`; additional settings and bindings belong in `caelestia/hypr-user.lua`, which is loaded after the upstream modules. This variant uses Brave and Neovim and does not enable the upstream Firefox, VS Code/VSCodium, Zed, or Micro components.
+
+To inspect upstream changes before updating:
+
+```bash
+git fetch upstream
+git diff --stat HEAD...upstream/main
+git diff HEAD...upstream/main -- manifest.toml hypr/
+```
+
+Review the full diff before merging so intentional removals and personal settings remain part of this variant.
 
 ## ⌨️ Hyprland Keybindings
 

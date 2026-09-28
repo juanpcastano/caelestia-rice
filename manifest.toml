@@ -32,6 +32,10 @@ dest = "$HOME/.local/bin/caelestia-watcher"
 name = "fish"
 default = true
 packages = ["fish", "eza", "zoxide", "direnv"]
+post_install = [
+    "mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/caelestia",
+    "touch ${XDG_CONFIG_HOME:-$HOME/.config}/caelestia/user-config.fish",
+]
 [[components.entries]]
 src = "fish"
 dest = "$XDG_CONFIG_HOME/fish"
@@ -56,6 +60,8 @@ dest = "$XDG_CONFIG_HOME/fastfetch"
 name = "btop"
 default = true
 packages = ["btop"]
+post_install = ["killall -USR2 btop 2>/dev/null || true"]
+post_update = ["killall -USR2 btop 2>/dev/null || true"]
 [[components.entries]]
 src = "btop"
 dest = "$XDG_CONFIG_HOME/btop"
@@ -79,7 +85,7 @@ dest = "$XDG_CONFIG_HOME/starship.toml"
 [[components]]
 name = "gtk"
 default = true
-packages = ["adw-gtk-theme", "papirus-icon-theme"]
+packages = ["adw-gtk-theme", "papirus-icon-theme", "papirus-folders"]
 
 [[components]]
 name = "qt"
@@ -119,7 +125,7 @@ packages = ["noto-fonts", "noto-fonts-cjk", "noto-fonts-emoji", "noto-fonts-extr
 [[components]]
 name = "tools"
 default = true
-packages = ["git", "inotify-tools", "trash-cli", "jq", "lazygit", "hyprpicker", "xdg-user-dirs", "app2unit", "gammastep", "udiskie", "cava", "mpv", "pavucontrol", "fuzzel"]
+packages = ["curl", "git", "inotify-tools", "trash-cli", "jq", "lazygit", "bat", "ripgrep", "hyprpicker", "xdg-user-dirs", "app2unit", "gammastep", "udiskie", "cava", "mpv", "pavucontrol", "fuzzel"]
 post_install = ["xdg-user-dirs-update"]
 
 [[components]]

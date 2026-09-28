@@ -11,6 +11,7 @@
 /caelestia/shell.json
 
 /tmux/plugins/
+/fish/conf.d/
 
 .SRCINFO
 caelestia-rice-*.pkg.tar.zst
