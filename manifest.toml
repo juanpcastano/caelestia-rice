@@ -216,19 +216,21 @@ default = true
 packages = ["sddm", "pixie-sddm-git"]
 post_install = [
     "sudo install -d -m 0755 -o $(id -un) -g root /var/cache/pixie-sddm",
-    "sudo install -d -m 0755 /etc/sddm.conf.d",
-    "printf '%s\\n' '[Theme]' 'Current=pixie' | sudo tee /etc/sddm.conf.d/10-pixie.conf >/dev/null",
-    "sudo ln -sfn /var/cache/pixie-sddm/theme.conf /usr/share/sddm/themes/pixie/theme.conf",
+    "chmod +x $HOME/.local/bin/caelestia-configure-sddm",
+    "$HOME/.local/bin/caelestia-configure-sddm",
     "chmod +x $HOME/.local/bin/caelestia-pixie-sync",
     "$HOME/.local/bin/caelestia-pixie-sync",
 ]
 post_update = [
     "sudo install -d -m 0755 -o $(id -un) -g root /var/cache/pixie-sddm",
-    "printf '%s\\n' '[Theme]' 'Current=pixie' | sudo tee /etc/sddm.conf.d/10-pixie.conf >/dev/null",
-    "sudo ln -sfn /var/cache/pixie-sddm/theme.conf /usr/share/sddm/themes/pixie/theme.conf",
+    "chmod +x $HOME/.local/bin/caelestia-configure-sddm",
+    "$HOME/.local/bin/caelestia-configure-sddm",
     "chmod +x $HOME/.local/bin/caelestia-pixie-sync",
     "$HOME/.local/bin/caelestia-pixie-sync",
 ]
+[[components.entries]]
+src = "scripts/caelestia-configure-sddm.sh"
+dest = "$HOME/.local/bin/caelestia-configure-sddm"
 [[components.entries]]
 src = "scripts/caelestia-pixie-sync.sh"
 dest = "$HOME/.local/bin/caelestia-pixie-sync"
