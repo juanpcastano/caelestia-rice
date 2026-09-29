@@ -249,8 +249,14 @@ local function read_apply()
     if vim.g.colors_name ~= "caelestia" then return true end
     local p, mode = read_scheme()
     if not p then return false end  -- partial / corrupt; verify pass will retry
-    apply(p, mode)
+
+    -- Notify plugins first so their ColorScheme handlers can finish before our
+    -- palette is applied. Then announce the completed update to consumers that
+    -- need to rebuild from the final highlight values (for example lualine).
+    vim.o.background = mode
     pcall(vim.api.nvim_exec_autocmds, "ColorScheme", { pattern = "caelestia", modeline = false })
+    apply(p, mode)
+    pcall(vim.api.nvim_exec_autocmds, "User", { pattern = "CaelestiaColorsUpdated", modeline = false })
     return true
 end
 

@@ -25,6 +25,12 @@ end
 -- Open the launcher on Super+Space release, matching the previous bindr.
 hl.bind("SUPER + Space", hl.dsp.global("caelestia:launcher"), { release = true })
 
+-- Watch Caelestia's generated Spicetify theme while Spotify is open.
+hl.on("window.open", function(win)
+    if type(win.class) ~= "string" or win.class:lower() ~= "spotify" then return end
+    hl.exec_cmd('nohup "$HOME/.local/bin/caelestia-spicetify-watch" >/dev/null 2>&1 &')
+end)
+
 hl.on("hyprland.start", function()
     hl.exec_cmd("systemctl --user start hyprpolkitagent.service")
     hl.exec_cmd("nohup \"$HOME/.local/bin/caelestia-watcher\" >/dev/null 2>&1 &")

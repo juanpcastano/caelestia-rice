@@ -13,10 +13,18 @@ if not test -f /etc/os-release
     exit 1
 end
 
-source /etc/os-release
-if not string match -q '*arch*' "$ID $ID_LIKE"
+set os_release (bash -c '. /etc/os-release; printf "%s\n" "$ID" "$ID_LIKE" "$PRETTY_NAME"')
+if test $status -ne 0; or test (count $os_release) -lt 3
+    echo "Cannot read distribution information from /etc/os-release."
+    exit 1
+end
+set distro_id $os_release[1]
+set distro_like $os_release[2]
+set distro_name $os_release[3]
+
+if not string match -qi '*arch*' "$distro_id $distro_like"
     echo "The Caelestia CLI package installer targets Arch-based distributions."
-    echo "Detected: $PRETTY_NAME"
+    echo "Detected: $distro_name"
     exit 1
 end
 

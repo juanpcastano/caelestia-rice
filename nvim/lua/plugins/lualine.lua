@@ -107,10 +107,19 @@ return {
 
         require('lualine').setup(build_config())
 
+        local refresh_theme = function()
+            pcall(require('lualine').setup, build_config())
+        end
+
         vim.api.nvim_create_autocmd('ColorScheme', {
             callback = function()
-                pcall(require('lualine').setup, build_config())
+                refresh_theme()
             end,
+        })
+
+        vim.api.nvim_create_autocmd('User', {
+            pattern = 'CaelestiaColorsUpdated',
+            callback = refresh_theme,
         })
     end,
 }

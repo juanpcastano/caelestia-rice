@@ -13,8 +13,8 @@ post_update = ["caelestia shell -k >/dev/null 2>&1 || true; sleep 1; caelestia s
 name = "hypr"
 default = true
 packages = ["hyprland", "xdg-desktop-portal-hyprland", "xdg-desktop-portal-gtk"]
-post_install = ["hyprctl reload >/dev/null 2>&1 || true", "chmod +x $HOME/.local/bin/caelestia-watcher"]
-post_update = ["hyprctl reload >/dev/null 2>&1 || true", "chmod +x $HOME/.local/bin/caelestia-watcher"]
+post_install = ["hyprctl reload >/dev/null 2>&1 || true", "chmod +x $HOME/.local/bin/caelestia-watcher $HOME/.local/bin/caelestia-spicetify-watch"]
+post_update = ["hyprctl reload >/dev/null 2>&1 || true", "chmod +x $HOME/.local/bin/caelestia-watcher $HOME/.local/bin/caelestia-spicetify-watch"]
 [[components.entries]]
 src = "hypr"
 dest = "$XDG_CONFIG_HOME/hypr"
@@ -27,6 +27,9 @@ dest = "$XDG_CONFIG_HOME/caelestia/hypr-user.lua"
 [[components.entries]]
 src = "scripts/caelestia-watcher.sh"
 dest = "$HOME/.local/bin/caelestia-watcher"
+[[components.entries]]
+src = "scripts/caelestia-spicetify-watch.sh"
+dest = "$HOME/.local/bin/caelestia-spicetify-watch"
 
 [[components]]
 name = "fish"

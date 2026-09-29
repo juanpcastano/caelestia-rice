@@ -1,28 +1,32 @@
 #!/bin/bash
 STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
-CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 STATE_DIR="$STATE_HOME/caelestia"
+SEQUENCES_FILE="$STATE_DIR/sequences.txt"
+TMUX_THEME_FILE="$STATE_DIR/theme/tmux-colors.conf"
 
 mkdir -p "$STATE_DIR/theme"
 
-send_reset_to_tmux_panes() {
-    tmux list-panes -a -F '#{pane_tty}' 2>/dev/null | while read -r tty; do
-        # 1. Resetear Fondo, Primer plano, Cursor y Selección a los defaults del emulador
-        printf '\033]110\033\\' >"$tty" 2>/dev/null # Cursor
-        printf '\033]111\033\\' >"$tty" 2>/dev/null # Fondo (Aquí está la magia de la transparencia)
-        printf '\033]112\033\\' >"$tty" 2>/dev/null # Texto
-        printf '\033]117\033\\' >"$tty" 2>/dev/null # Highlight/Selección
+send_sequences_to_tmux_clients() {
+    [ -r "$SEQUENCES_FILE" ] || return
 
-        # 2. LA CLAVE: Resetear TODA la paleta de colores ANSI a los defaults del emulador
-        printf '\033]104\033\\' >"$tty" 2>/dev/null
+    tmux list-clients -F '#{client_tty}' 2>/dev/null | while IFS= read -r tty; do
+        [ -n "$tty" ] && [ -w "$tty" ] || continue
+        cat "$SEQUENCES_FILE" >"$tty" 2>/dev/null
     done
 }
 
-inotifywait -m -e close_write,create "$STATE_DIR" "$STATE_DIR/theme" --format '%w%f' 2>/dev/null | while read -r filepath; do
-    file=$(basename "$filepath")
-    if [ "$file" = "sequences.txt" ]; then
-        send_reset_to_tmux_panes
-    elif [ "$file" = "tmux-colors.conf" ]; then
-        tmux source-file "$CONFIG_HOME/tmux/tmux.conf" 2>/dev/null
-    fi
+reload_tmux_theme() {
+    [ -r "$TMUX_THEME_FILE" ] || return
+    tmux source-file -q "$TMUX_THEME_FILE" 2>/dev/null || return
+    tmux refresh-client -S 2>/dev/null || true
+}
+
+# Caelestia may replace generated files with an atomic rename, which reports
+# IN_MOVED_TO rather than IN_CREATE/IN_CLOSE_WRITE.
+inotifywait -m -e close_write,create,moved_to "$STATE_DIR" "$STATE_DIR/theme" \
+    --format '%w%f' 2>/dev/null | while IFS= read -r filepath; do
+    case "$filepath" in
+        "$SEQUENCES_FILE") send_sequences_to_tmux_clients ;;
+        "$TMUX_THEME_FILE") reload_tmux_theme ;;
+    esac
 done
