@@ -23,7 +23,7 @@ A complete and elegant Hyprland configuration not meant to be optimal, just give
 - Fish and Git
 - An AUR helper (`install.fish` bootstraps `paru` if neither `paru` nor `yay` is installed)
 
-The Caelestia CLI installs packages and deploys the dotfiles described in `manifest.toml`. It does not install GPU drivers or configure system services; handle those through CachyOS/system settings as needed.
+The Caelestia CLI installs packages and deploys the dotfiles described in `manifest.toml`. This setup targets Arch-compatible systems with `pacman`/`makepkg` and AUR support. It does not install GPU drivers or enable system services; handle those through the distribution's settings as needed.
 
 ## 🚀 Quick Installation
 
@@ -35,7 +35,13 @@ fish install.fish
 
 `install.fish` points the CLI at this repository and runs `caelestia install`. The CLI installs the committed branch from the remote, so commit and push changes before installing them on a new machine. The CLI offers a backup of `~/.config` before deployment.
 
-Most components in `manifest.toml` are enabled by default. `auth`, `spotify`, `discord`, `docker`, and `sddm` are optional. Enable `spotify,discord` with `caelestia install --enable-components spotify,discord` to install Spotify with Spicetify and Equibop with Equicord. Equibop is a separate client and leaves the official Discord installed. The `auth` component installs GNOME Keyring and the GNOME Polkit agent; it is off by default in this variant.
+Most components in `manifest.toml` are enabled by default. `uwsm`, `spotify`, `discord`, and `docker` are optional. SDDM is enabled and installs the Pixie QML theme. Enable `spotify,discord` with `caelestia install --enable-components spotify,discord` to install Spotify with Spicetify and Equibop with Equicord. Equibop is a separate client and leaves the official Discord installed. The `auth` component is enabled by default and installs `hyprpolkitagent`.
+
+## Migrating to CachyOS or another Arch-based distro
+
+CachyOS uses the same `pacman` package ecosystem, so the normal installation above should deploy the same rice without a distro-specific manifest. Push your latest dotfiles first, then clone this repository and run `fish install.fish` on the new system. Review the installer backup before replacing existing configuration.
+
+The repository contains the shared configuration, but intentionally does not version generated or machine-local state such as `caelestia/monitors/`, `caelestia/shell.json`, `hypr/scheme/current.lua`, `fish/fish_variables`, and `btop/themes/`. Recreate or copy any personal choices from these locations if you want them on the new install. Also configure hardware-specific items—GPU drivers, enabled services, and display setup—on CachyOS; the manifest installs packages but does not configure those system settings. SDDM is configured without autologin and uses Pixie. The existing Caelestia watcher copies the current wallpaper to `/var/cache/pixie-sddm`; Pixie then extracts its own Material colors from that wallpaper at the next login screen.
 
 ## Upstream and personal configuration
 
