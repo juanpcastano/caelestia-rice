@@ -43,6 +43,8 @@ This repository follows the full `caelestia-dots/caelestia` project. Upstream fi
 
 Hyprland modules in `hypr/` follow upstream. Put supported values in `caelestia/hypr-vars.lua`; additional settings and bindings belong in `caelestia/hypr-user.lua`, which is loaded after the upstream modules. This variant uses Brave and Neovim and does not enable the upstream Firefox, VS Code/VSCodium, Zed, or Micro components.
 
+OpenCode's global TUI preferences are kept in `opencode/cli.json` and deployed to `~/.config/opencode/cli.json` by the `opencode` manifest component. OpenCode does not support project-local CLI preferences, so this keeps its `system` theme and other TUI settings portable with the dotfiles.
+
 To inspect upstream changes before updating:
 
 ```bash
