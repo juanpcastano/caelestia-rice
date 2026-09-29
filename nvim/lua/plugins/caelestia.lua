@@ -8,19 +8,21 @@
 vim.api.nvim_create_autocmd("VimEnter", {
     once = true,
     group = vim.api.nvim_create_augroup("caelestia_colorscheme", { clear = true }),
-    callback = function()
-        pcall(vim.cmd.colorscheme, "caelestia")
+    callback = function() pcall(vim.cmd.colorscheme, "caelestia") end,
+})
 
-        -- Startup plugins and other VimEnter handlers can still adjust their
-        -- highlights after the colorscheme's ColorScheme event. Refresh
-        -- consumers from the final palette once startup callbacks have run.
-        vim.schedule(function()
-            if vim.g.colors_name ~= "caelestia" then return end
-            pcall(vim.api.nvim_exec_autocmds, "User", {
-                pattern = "CaelestiaColorsUpdated",
-                modeline = false,
-            })
-        end)
+-- Refresh consumers after lazy.nvim has loaded their startup handlers.
+vim.api.nvim_create_autocmd("User", {
+    once = true,
+    group = vim.api.nvim_create_augroup("caelestia_colorscheme_ready", { clear = true }),
+    pattern = "VeryLazy",
+    callback = function()
+        if vim.g.colors_name ~= "caelestia" then return end
+        pcall(vim.cmd.colorscheme, "caelestia")
+        pcall(vim.api.nvim_exec_autocmds, "User", {
+            pattern = "CaelestiaColorsUpdated",
+            modeline = false,
+        })
     end,
 })
 

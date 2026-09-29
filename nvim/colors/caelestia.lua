@@ -93,6 +93,13 @@ local function apply(p, mode)
     hl("TabLineSel",    { fg = p.primary, bg = bg, bold = true })
     hl("WinBar",        { fg = p.onSurfaceVariant, bg = bg })
 
+    -- Keep indentation guides visible but subordinate to source text.
+    local indent_guide = blend(p.outlineVariant, p.surface, 0.4)
+    hl("CaelestiaIndent", { fg = indent_guide })
+    hl("IblIndent",     { fg = indent_guide })
+    hl("IblWhitespace", { fg = indent_guide })
+    hl("IblScope",      { fg = indent_guide })
+
     -- Spell
     hl("SpellBad",      { sp = p.error, undercurl = true })
     hl("SpellCap",      { sp = p.term3, undercurl = true })
