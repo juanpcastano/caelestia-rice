@@ -1,6 +1,5 @@
 #!/bin/bash
 STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
-CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 STATE_DIR="$STATE_HOME/caelestia"
 SEQUENCES_FILE="$STATE_DIR/sequences.txt"
 TMUX_THEME_FILE="$STATE_DIR/theme/tmux-colors.conf"
@@ -17,8 +16,16 @@ send_sequences_to_tmux_clients() {
 }
 
 refresh_opencode_theme() {
-    local cli_config="$CONFIG_HOME/opencode/cli.json"
-    [ -f "$cli_config" ] && touch "$cli_config"
+    # OpenCode 2.x refreshes its terminal-derived system theme on SIGUSR2.
+    ps -u "$(id -u)" -o pid=,tty=,comm= | while read -r pid tty comm; do
+        [ "$tty" != "?" ] && [ "$comm" = "opencode" ] || continue
+        [ -r "/proc/$pid/cmdline" ] || continue
+
+        local command extra
+        read -r command extra < <(tr '\0' '\n' <"/proc/$pid/cmdline")
+        [ "$command" = "opencode" ] && [ -z "$extra" ] || continue
+        kill -USR2 "$pid" 2>/dev/null || true
+    done
 }
 
 reload_tmux_theme() {
