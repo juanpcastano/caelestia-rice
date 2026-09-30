@@ -119,4 +119,5 @@ end
 
 echo "Caelestia CLI will use $repo_url ($branch)."
 echo "Important: the CLI installs the committed remote branch, not uncommitted local edits."
+bash $script_dir/scripts/caelestia-enable-multilib.sh
 caelestia install
