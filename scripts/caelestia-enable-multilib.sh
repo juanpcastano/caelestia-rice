@@ -11,10 +11,8 @@ fi
 
 if ! grep -q '^\[multilib\]' /etc/pacman.conf; then
     sudo sed -i \
-        '/^#\[multilib\]/,/^#Include = \/etc\/pacman.d\/mirrorlist$/ { \
-            s/^#\[multilib\]/[multilib]/\
-            s/^#Include = \/etc\/pacman.d\/mirrorlist$/Include = \/etc\/pacman.d\/mirrorlist/\
-        }' \
+        -e 's/^#\[multilib\]$/[multilib]/' \
+        -e 's/^#Include = \/etc\/pacman.d\/mirrorlist$/Include = \/etc\/pacman.d\/mirrorlist/' \
         /etc/pacman.conf
 fi
 
