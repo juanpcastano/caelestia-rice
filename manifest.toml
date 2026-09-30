@@ -48,6 +48,15 @@ src = "systemd/caelestia-numlock-resume.service"
 dest = "$XDG_CONFIG_HOME/systemd/user/caelestia-numlock-resume.service"
 
 [[components]]
+name = "hibernate"
+packages = []
+post_install = ["chmod +x $HOME/.local/bin/caelestia-enable-hibernate", "sudo $HOME/.local/bin/caelestia-enable-hibernate"]
+post_update = ["chmod +x $HOME/.local/bin/caelestia-enable-hibernate", "sudo $HOME/.local/bin/caelestia-enable-hibernate"]
+[[components.entries]]
+src = "scripts/caelestia-enable-hibernate.sh"
+dest = "$HOME/.local/bin/caelestia-enable-hibernate"
+
+[[components]]
 name = "fish"
 default = true
 packages = ["fish", "eza", "zoxide", "direnv"]
@@ -144,16 +153,21 @@ packages = ["noto-fonts", "noto-fonts-cjk", "noto-fonts-emoji", "noto-fonts-extr
 [[components]]
 name = "tools"
 default = true
-packages = ["curl", "git", "inotify-tools", "util-linux", "trash-cli", "jq", "lazygit", "bat", "ripgrep", "hyprpicker", "xdg-user-dirs", "app2unit", "gammastep", "udiskie", "cava", "mpv", "pavucontrol", "fuzzel"]
+packages = ["curl", "git", "inotify-tools", "util-linux", "trash-cli", "jq", "lazygit", "bat", "ripgrep", "hyprpicker", "xdg-user-dirs", "app2unit", "gammastep", "udiskie", "cava", "mpv", "pavucontrol", "fuzzel", "less", "nvtop", "openssh", "reflector", "wget", "7zip"]
 post_install = ["xdg-user-dirs-update"]
 
 [[components]]
 name = "nvim"
 default = true
-packages = ["neovim", "python", "python-pip", "nodejs", "npm", "go", "rust", "jdk-openjdk", "luarocks", "tree-sitter-cli"]
+packages = ["neovim", "vim"]
 [[components.entries]]
 src = "nvim"
 dest = "$XDG_CONFIG_HOME/nvim"
+
+[[components]]
+name = "development"
+default = true
+packages = ["python", "python-pip", "nodejs", "npm", "pnpm", "go", "rust", "jdk-openjdk", "maven", "luarocks", "tree-sitter-cli"]
 
 [[components]]
 name = "tmux"
@@ -199,6 +213,10 @@ default = true
 packages = ["brave-bin", "obs-studio", "libreoffice-fresh"]
 
 # --- Optional components ---
+
+[[components]]
+name = "steam"
+packages = ["steam"]
 
 [[components]]
 name = "spotify"
