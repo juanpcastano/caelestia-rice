@@ -199,6 +199,36 @@ caelestia update
 - Verify `caelestia` is installed: `command -v caelestia`
 - Restart the shell: `Ctrl + Super + Alt + R`
 
+#### CachyOS: `noctalia-qs` is installed instead of `quickshell-git`
+
+CachyOS may satisfy Caelestia's `quickshell-git` dependency with its
+`noctalia-qs` package. If Hyprland starts with a blank screen and the shell
+does not load, replace it with the actual AUR package:
+
+```bash
+sudo pacman -Rdd noctalia-qs
+paru --aur -S quickshell-git
+```
+
+Then reboot. Verify that `quickshell-git` is installed and `noctalia-qs` is
+not:
+
+```bash
+pacman -Q quickshell-git
+pacman -Q noctalia-qs
+```
+
+#### CachyOS: Node fails with `libsimdjson.so.33`
+
+If `node -v` fails with a missing `libsimdjson` library while installing the
+Spotify/Spicetify component, install the packages from the `extra` repository:
+
+```bash
+sudo pacman -S extra/nodejs extra/simdjson
+```
+
+Confirm that `node -v` works before running `fish install.fish` again.
+
 ## 📄 License
 
 This project is under the GPL-3.0 license.
