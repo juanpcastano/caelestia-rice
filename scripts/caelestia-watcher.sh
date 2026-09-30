@@ -3,7 +3,6 @@ STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 STATE_DIR="$STATE_HOME/caelestia"
 SEQUENCES_FILE="$STATE_DIR/sequences.txt"
 TMUX_THEME_FILE="$STATE_DIR/theme/tmux-colors.conf"
-PIXIE_SYNC="$HOME/.local/bin/caelestia-pixie-sync"
 
 mkdir -p "$STATE_DIR/theme" "$STATE_DIR/wallpaper"
 
@@ -48,8 +47,5 @@ inotifywait -m -e close_write,create,moved_to "$STATE_DIR" "$STATE_DIR/theme" "$
             refresh_opencode_theme
             ;;
         "$TMUX_THEME_FILE") reload_tmux_theme ;;
-        "$STATE_DIR/wallpaper/path.txt")
-            [ -x "$PIXIE_SYNC" ] && "$PIXIE_SYNC" || true
-            ;;
     esac
 done

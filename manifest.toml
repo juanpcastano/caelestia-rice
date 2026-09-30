@@ -211,26 +211,10 @@ name = "docker"
 packages = ["docker", "docker-compose"]
 
 [[components]]
-name = "sddm"
-default = true
-packages = ["sddm", "pixie-sddm-git"]
-post_install = [
-    "sudo install -d -m 0755 -o $(id -un) -g root /var/cache/pixie-sddm",
-    "chmod +x $HOME/.local/bin/caelestia-configure-sddm",
-    "$HOME/.local/bin/caelestia-configure-sddm",
-    "chmod +x $HOME/.local/bin/caelestia-pixie-sync",
-    "$HOME/.local/bin/caelestia-pixie-sync",
-]
-post_update = [
-    "sudo install -d -m 0755 -o $(id -un) -g root /var/cache/pixie-sddm",
-    "chmod +x $HOME/.local/bin/caelestia-configure-sddm",
-    "$HOME/.local/bin/caelestia-configure-sddm",
-    "chmod +x $HOME/.local/bin/caelestia-pixie-sync",
-    "$HOME/.local/bin/caelestia-pixie-sync",
-]
+name = "greetd"
+packages = ["greetd"]
+post_install = ["chmod +x $HOME/.local/bin/caelestia-install-greeter", "$HOME/.local/bin/caelestia-install-greeter"]
+post_update = ["chmod +x $HOME/.local/bin/caelestia-install-greeter", "$HOME/.local/bin/caelestia-install-greeter"]
 [[components.entries]]
-src = "scripts/caelestia-configure-sddm.sh"
-dest = "$HOME/.local/bin/caelestia-configure-sddm"
-[[components.entries]]
-src = "scripts/caelestia-pixie-sync.sh"
-dest = "$HOME/.local/bin/caelestia-pixie-sync"
+src = "scripts/caelestia-install-greeter.sh"
+dest = "$HOME/.local/bin/caelestia-install-greeter"
