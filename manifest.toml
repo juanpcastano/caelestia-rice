@@ -13,8 +13,18 @@ post_update = ["caelestia shell -k >/dev/null 2>&1 || true; sleep 1; caelestia s
 name = "hypr"
 default = true
 packages = ["hyprland", "xdg-desktop-portal-hyprland", "xdg-desktop-portal-gtk"]
-post_install = ["hyprctl reload >/dev/null 2>&1 || true", "chmod +x $HOME/.local/bin/caelestia-watcher $HOME/.local/bin/caelestia-spicetify-watch"]
-post_update = ["hyprctl reload >/dev/null 2>&1 || true", "chmod +x $HOME/.local/bin/caelestia-watcher $HOME/.local/bin/caelestia-spicetify-watch"]
+post_install = [
+    "hyprctl reload >/dev/null 2>&1 || true",
+    "chmod +x $HOME/.local/bin/caelestia-watcher $HOME/.local/bin/caelestia-spicetify-watch $HOME/.local/bin/caelestia-numlock-resume",
+    "systemctl --user daemon-reload >/dev/null 2>&1 || true",
+    "systemctl --user enable --now caelestia-numlock-resume.service >/dev/null 2>&1 || true",
+]
+post_update = [
+    "hyprctl reload >/dev/null 2>&1 || true",
+    "chmod +x $HOME/.local/bin/caelestia-watcher $HOME/.local/bin/caelestia-spicetify-watch $HOME/.local/bin/caelestia-numlock-resume",
+    "systemctl --user daemon-reload >/dev/null 2>&1 || true",
+    "systemctl --user enable --now caelestia-numlock-resume.service >/dev/null 2>&1 || true",
+]
 [[components.entries]]
 src = "hypr"
 dest = "$XDG_CONFIG_HOME/hypr"
@@ -30,6 +40,12 @@ dest = "$HOME/.local/bin/caelestia-watcher"
 [[components.entries]]
 src = "scripts/caelestia-spicetify-watch.sh"
 dest = "$HOME/.local/bin/caelestia-spicetify-watch"
+[[components.entries]]
+src = "scripts/caelestia-numlock-resume.sh"
+dest = "$HOME/.local/bin/caelestia-numlock-resume"
+[[components.entries]]
+src = "systemd/caelestia-numlock-resume.service"
+dest = "$XDG_CONFIG_HOME/systemd/user/caelestia-numlock-resume.service"
 
 [[components]]
 name = "fish"

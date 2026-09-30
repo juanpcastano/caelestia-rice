@@ -14,6 +14,10 @@ hl.config({
         accel_profile      = "flat",
         natural_scroll     = false,
     },
+    misc = {
+        -- Keep the lockscreen background blurred while workspaces remain rendered.
+        session_lock_blur = true,
+    },
 })
 
 -- Keep the original vim-style navigation and move-window shortcuts.
