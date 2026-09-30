@@ -172,13 +172,18 @@ packages = ["python", "python-pip", "nodejs", "npm", "pnpm", "go", "rust", "jdk-
 [[components]]
 name = "tmux"
 default = true
-packages = ["tmux"]
+packages = ["tmux", "git"]
+post_install = ["bash $HOME/.local/bin/caelestia-install-tpm"]
+post_update = ["bash $HOME/.local/bin/caelestia-install-tpm"]
 [[components.entries]]
 src = "tmux"
 dest = "$XDG_CONFIG_HOME/tmux"
 [[components.entries]]
 src = "caelestia/templates/tmux-colors.conf"
 dest = "$XDG_CONFIG_HOME/caelestia/templates/tmux-colors.conf"
+[[components.entries]]
+src = "scripts/caelestia-install-tpm.sh"
+dest = "$HOME/.local/bin/caelestia-install-tpm"
 
 [[components]]
 name = "uwsm"
