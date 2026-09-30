@@ -18,5 +18,10 @@ if ! grep -q '^\[multilib\]' /etc/pacman.conf; then
         /etc/pacman.conf
 fi
 
+if ! grep -q '^\[multilib\]' /etc/pacman.conf; then
+    echo "Could not enable the multilib repository in /etc/pacman.conf." >&2
+    exit 1
+fi
+
 sudo pacman -Sy
 echo "Enabled Arch multilib repository."
