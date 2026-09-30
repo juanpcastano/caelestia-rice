@@ -219,6 +219,15 @@ name = "steam"
 packages = ["steam"]
 
 [[components]]
+name = "virtualization"
+packages = ["qemu-desktop", "virt-manager", "libvirt", "dnsmasq", "edk2-ovmf", "swtpm"]
+post_install = ["chmod +x $HOME/.local/bin/caelestia-enable-virtualization", "$HOME/.local/bin/caelestia-enable-virtualization"]
+post_update = ["chmod +x $HOME/.local/bin/caelestia-enable-virtualization", "$HOME/.local/bin/caelestia-enable-virtualization"]
+[[components.entries]]
+src = "scripts/caelestia-enable-virtualization.sh"
+dest = "$HOME/.local/bin/caelestia-enable-virtualization"
+
+[[components]]
 name = "droidcam"
 packages = ["droidcam", "v4l2loopback-dc-dkms"]
 
