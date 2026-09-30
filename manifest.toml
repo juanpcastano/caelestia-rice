@@ -153,7 +153,7 @@ packages = ["noto-fonts", "noto-fonts-cjk", "noto-fonts-emoji", "noto-fonts-extr
 [[components]]
 name = "tools"
 default = true
-packages = ["curl", "git", "inotify-tools", "util-linux", "trash-cli", "jq", "lazygit", "bat", "ripgrep", "hyprpicker", "xdg-user-dirs", "app2unit", "gammastep", "udiskie", "cava", "mpv", "pavucontrol", "fuzzel", "less", "nvtop", "openssh", "reflector", "wget", "7zip"]
+packages = ["curl", "git", "inotify-tools", "util-linux", "trash-cli", "jq", "bat", "ripgrep", "hyprpicker", "xdg-user-dirs", "app2unit", "gammastep", "udiskie", "cava", "mpv", "pavucontrol", "fuzzel", "less", "nvtop", "openssh", "reflector", "wget", "7zip"]
 post_install = ["xdg-user-dirs-update"]
 
 [[components]]
@@ -167,7 +167,7 @@ dest = "$XDG_CONFIG_HOME/nvim"
 [[components]]
 name = "development"
 default = true
-packages = ["python", "python-pip", "nodejs", "npm", "pnpm", "go", "rust", "jdk-openjdk", "maven", "luarocks", "tree-sitter-cli"]
+packages = ["python", "python-pip", "nodejs", "npm", "pnpm", "go", "rust", "jdk-openjdk", "maven", "luarocks", "tree-sitter-cli", "lazygit", "lazydocker", "lazysql-bin", "postman"]
 
 [[components]]
 name = "tmux"
@@ -217,6 +217,10 @@ packages = ["brave-bin", "obs-studio", "libreoffice-fresh"]
 [[components]]
 name = "steam"
 packages = ["steam"]
+
+[[components]]
+name = "droidcam"
+packages = ["droidcam", "v4l2loopback-dc-dkms"]
 
 [[components]]
 name = "spotify"
