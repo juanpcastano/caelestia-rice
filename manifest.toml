@@ -109,14 +109,10 @@ packages = ["udisks2", "gvfs", "udiskie"]
 post_install = [
     "chmod +x $HOME/.local/bin/caelestia-enable-automount",
     "$HOME/.local/bin/caelestia-enable-automount",
-    "systemctl --user daemon-reload >/dev/null 2>&1 || true",
-    "systemctl --user enable --now caelestia-udiskie.service >/dev/null 2>&1 || true",
 ]
 post_update = [
     "chmod +x $HOME/.local/bin/caelestia-enable-automount",
     "$HOME/.local/bin/caelestia-enable-automount",
-    "systemctl --user daemon-reload >/dev/null 2>&1 || true",
-    "systemctl --user enable --now caelestia-udiskie.service >/dev/null 2>&1 || true",
 ]
 [[components.entries]]
 src = "automount/49-caelestia-automount.rules"
