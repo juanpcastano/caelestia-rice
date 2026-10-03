@@ -9,14 +9,19 @@ if [[ ! -f "$rule_source" ]]; then
     exit 1
 fi
 
-if ! sudo -v; then
-    printf 'Could not authenticate with sudo; automount configuration was not installed.\n' >&2
-    exit 1
+if command -v pkexec >/dev/null 2>&1; then
+    elevated=(pkexec)
+else
+    if ! sudo -v; then
+        printf 'Could not authenticate with sudo; automount configuration was not installed.\n' >&2
+        exit 1
+    fi
+    elevated=(sudo)
 fi
 
-sudo install -o root -g root -Dm644 "$rule_source" "$rule_destination"
+"${elevated[@]}" /usr/bin/install -o root -g root -Dm644 "$rule_source" "$rule_destination"
 
-if ! sudo test -f "$rule_destination"; then
+if [[ ! -f "$rule_destination" ]]; then
     printf 'Polkit rule was not installed at %s.\n' "$rule_destination" >&2
     exit 1
 fi
