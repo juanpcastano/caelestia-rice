@@ -3,9 +3,11 @@ set -euo pipefail
 
 rule_source="${XDG_DATA_HOME:-$HOME/.local/share}/caelestia/automount/49-caelestia-automount.rules"
 rule_destination="/etc/polkit-1/rules.d/49-caelestia-automount.rules"
+udev_source="${XDG_DATA_HOME:-$HOME/.local/share}/caelestia/automount/80-caelestia-udisks-auto.rules"
+udev_destination="/etc/udev/rules.d/80-caelestia-udisks-auto.rules"
 
-if [[ ! -f "$rule_source" ]]; then
-    printf 'Automount Polkit rule not found: %s\n' "$rule_source" >&2
+if [[ ! -f "$rule_source" || ! -f "$udev_source" ]]; then
+    printf 'Automount rules are missing from %s\n' "${XDG_DATA_HOME:-$HOME/.local/share}/caelestia/automount" >&2
     exit 1
 fi
 
@@ -20,11 +22,16 @@ else
 fi
 
 "${elevated[@]}" /usr/bin/install -o root -g root -Dm644 "$rule_source" "$rule_destination"
+"${elevated[@]}" /usr/bin/install -o root -g root -Dm644 "$udev_source" "$udev_destination"
 
-if [[ ! -f "$rule_destination" ]]; then
-    printf 'Polkit rule was not installed at %s.\n' "$rule_destination" >&2
+if [[ ! -f "$rule_destination" || ! -f "$udev_destination" ]]; then
+    printf 'Automount rules were not installed correctly.\n' >&2
     exit 1
 fi
+
+"${elevated[@]}" /usr/bin/udevadm control --reload-rules
+"${elevated[@]}" /usr/bin/udevadm trigger --subsystem-match=block
+systemctl --user restart caelestia-udiskie.service
 
 # Thunar's configuration is deployed by the thunar component. These settings
 # cover desktop environments that also consult GNOME's media-handling schema.

@@ -1,0 +1,8 @@
+# Automatically present ordinary data partitions to UDisks/GVFS.
+# Partition types are generic GPT type GUIDs, not machine-specific UUIDs.
+
+# Microsoft basic data: Windows data volumes, including ordinary NTFS disks.
+ACTION=="add|change", SUBSYSTEM=="block", ENV{ID_PART_ENTRY_TYPE}=="ebd0a0a2-b9e5-4433-87c0-68b6b72699c7", ENV{UDISKS_AUTO}="1"
+
+# Linux filesystem data partitions.
+ACTION=="add|change", SUBSYSTEM=="block", ENV{ID_PART_ENTRY_TYPE}=="0fc63daf-8483-4772-8e79-3d69d8477de4", ENV{UDISKS_AUTO}="1"

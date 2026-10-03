@@ -118,6 +118,9 @@ post_update = [
 src = "automount/49-caelestia-automount.rules"
 dest = "$HOME/.local/share/caelestia/automount/49-caelestia-automount.rules"
 [[components.entries]]
+src = "automount/80-caelestia-udisks-auto.rules"
+dest = "$HOME/.local/share/caelestia/automount/80-caelestia-udisks-auto.rules"
+[[components.entries]]
 src = "scripts/caelestia-enable-automount.sh"
 dest = "$HOME/.local/bin/caelestia-enable-automount"
 [[components.entries]]
