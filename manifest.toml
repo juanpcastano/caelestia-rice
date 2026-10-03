@@ -107,11 +107,11 @@ name = "automount"
 default = true
 packages = ["udisks2", "gvfs", "udiskie"]
 post_install = [
-    "chmod +x $HOME/.local/bin/caelestia-enable-automount",
+    "chmod +x $HOME/.local/bin/caelestia-enable-automount $HOME/.local/bin/caelestia-mount-auto-volumes",
     "$HOME/.local/bin/caelestia-enable-automount",
 ]
 post_update = [
-    "chmod +x $HOME/.local/bin/caelestia-enable-automount",
+    "chmod +x $HOME/.local/bin/caelestia-enable-automount $HOME/.local/bin/caelestia-mount-auto-volumes",
     "$HOME/.local/bin/caelestia-enable-automount",
 ]
 [[components.entries]]
@@ -123,6 +123,9 @@ dest = "$HOME/.local/share/caelestia/automount/80-caelestia-udisks-auto.rules"
 [[components.entries]]
 src = "scripts/caelestia-enable-automount.sh"
 dest = "$HOME/.local/bin/caelestia-enable-automount"
+[[components.entries]]
+src = "scripts/caelestia-mount-auto-volumes.sh"
+dest = "$HOME/.local/bin/caelestia-mount-auto-volumes"
 [[components.entries]]
 src = "systemd/caelestia-udiskie.service"
 dest = "$XDG_CONFIG_HOME/systemd/user/caelestia-udiskie.service"

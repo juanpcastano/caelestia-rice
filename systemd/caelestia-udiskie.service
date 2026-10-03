@@ -4,6 +4,7 @@ After=graphical-session.target
 PartOf=graphical-session.target
 
 [Service]
+ExecStartPre=%h/.local/bin/caelestia-mount-auto-volumes
 ExecStart=/usr/bin/udiskie --automount --no-tray --no-notify --no-file-manager --no-password-prompt
 Restart=on-failure
 RestartSec=2s
