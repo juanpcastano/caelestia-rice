@@ -103,6 +103,32 @@ src = "thunar"
 dest = "$XDG_CONFIG_HOME/Thunar"
 
 [[components]]
+name = "automount"
+default = true
+packages = ["udisks2", "gvfs", "gvfs-udisks2", "udiskie"]
+post_install = [
+    "chmod +x $HOME/.local/bin/caelestia-enable-automount",
+    "$HOME/.local/bin/caelestia-enable-automount",
+    "systemctl --user daemon-reload >/dev/null 2>&1 || true",
+    "systemctl --user enable --now caelestia-udiskie.service >/dev/null 2>&1 || true",
+]
+post_update = [
+    "chmod +x $HOME/.local/bin/caelestia-enable-automount",
+    "$HOME/.local/bin/caelestia-enable-automount",
+    "systemctl --user daemon-reload >/dev/null 2>&1 || true",
+    "systemctl --user enable --now caelestia-udiskie.service >/dev/null 2>&1 || true",
+]
+[[components.entries]]
+src = "automount/49-caelestia-automount.rules"
+dest = "$HOME/.local/share/caelestia/automount/49-caelestia-automount.rules"
+[[components.entries]]
+src = "scripts/caelestia-enable-automount.sh"
+dest = "$HOME/.local/bin/caelestia-enable-automount"
+[[components.entries]]
+src = "systemd/caelestia-udiskie.service"
+dest = "$XDG_CONFIG_HOME/systemd/user/caelestia-udiskie.service"
+
+[[components]]
 name = "starship"
 default = true
 packages = ["starship"]

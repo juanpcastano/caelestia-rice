@@ -1,0 +1,12 @@
+// Allow the active local desktop user to mount filesystems through UDisks2.
+// This is intentionally device-agnostic: it applies to newly added volumes
+// as well as to existing internal and removable devices.
+polkit.addRule(function (action, subject) {
+    var mountActions = [
+        "org.freedesktop.udisks2.filesystem-mount",
+        "org.freedesktop.udisks2.filesystem-mount-system",
+    ];
+
+    if (mountActions.indexOf(action.id) !== -1 && subject.local && subject.active)
+        return polkit.Result.YES;
+});

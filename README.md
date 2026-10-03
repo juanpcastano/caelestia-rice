@@ -37,6 +37,8 @@ fish install.fish
 
 Most components in `manifest.toml` are enabled by default. `uwsm`, `greetd`, `spotify`, `discord`, and `docker` are optional. Enable the greetd workflow with `caelestia install --enable-components greetd`; this installs greetd and the upstream Caelestia Greeter with its dedicated Hyprland compositor. Enable multiple optional components together, for example `caelestia install --enable-components greetd,spotify,discord`. Equibop is a separate client and leaves the official Discord installed. The `auth` component is enabled by default and installs `hyprpolkitagent`.
 
+The default `automount` component installs UDisks2's GVFS volume monitor, `udiskie` as a user automount daemon, and a generic Polkit rule allowing filesystem mounts from an active local desktop session, without hardcoding disk UUIDs or labels. Existing `/etc/fstab` entries are intentionally left untouched; remove a static entry manually only after verifying that the service mounts the volume at `/run/media/$USER/<label>` and that applications such as Steam use the new path.
+
 ## Migrating to CachyOS or another Arch-based distro
 
 CachyOS uses the same `pacman` package ecosystem, so the normal installation above should deploy the same rice without a distro-specific manifest. Push your latest dotfiles first, then clone this repository and run `fish install.fish` on the new system. Review the installer backup before replacing existing configuration.
