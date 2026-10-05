@@ -21,8 +21,16 @@ else
     elevated=(sudo)
 fi
 
-"${elevated[@]}" /usr/bin/install -o root -g root -Dm644 "$rule_source" "$rule_destination"
-"${elevated[@]}" /usr/bin/install -o root -g root -Dm644 "$udev_source" "$udev_destination"
+# Install both files in one privileged transaction.  Calling pkexec once per
+# file makes the graphical polkit agent ask for the password twice and can
+# leave the hook half-completed when the second authorization is rejected.
+if ! "${elevated[@]}" /bin/sh -c '
+    /usr/bin/install -o root -g root -Dm644 "$1" "$2"
+    /usr/bin/install -o root -g root -Dm644 "$3" "$4"
+' _ "$rule_source" "$rule_destination" "$udev_source" "$udev_destination"; then
+    printf 'Could not install the Polkit and UDev automount rules.\n' >&2
+    exit 1
+fi
 
 if [[ ! -f "$rule_destination" || ! -f "$udev_destination" ]]; then
     printf 'Automount rules were not installed correctly.\n' >&2
