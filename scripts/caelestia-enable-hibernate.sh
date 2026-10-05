@@ -11,15 +11,25 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 swap_device=""
-while read -r device; do
+memory_kib=$(awk '/^MemTotal:/ { print $2; exit }' /proc/meminfo)
+if [[ ! "$memory_kib" =~ ^[0-9]+$ ]] || (( memory_kib == 0 )); then
+    echo "Could not determine the amount of installed memory." >&2
+    exit 1
+fi
+memory_bytes=$((memory_kib * 1024))
+
+while read -r device swap_size_bytes; do
     [[ -z "$device" || "$device" == /dev/zram* ]] && continue
     [[ -b "$device" ]] || continue
-    swap_device="$device"
-    break
-done < <(swapon --show=NAME --noheadings)
+    [[ "$swap_size_bytes" =~ ^[0-9]+$ ]] || continue
+    if (( swap_size_bytes >= memory_bytes )); then
+        swap_device="$device"
+        break
+    fi
+done < <(swapon --show=NAME,SIZE --bytes --noheadings)
 
 if [[ -z "$swap_device" ]]; then
-    echo "No disk-backed swap partition was found; hibernation was not configured." >&2
+    echo "No disk-backed swap at least as large as RAM was found; hibernation was not configured." >&2
     exit 1
 fi
 
