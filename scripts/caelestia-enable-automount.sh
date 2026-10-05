@@ -39,7 +39,11 @@ fi
 
 "${elevated[@]}" /usr/bin/udevadm control --reload-rules
 "${elevated[@]}" /usr/bin/udevadm trigger --subsystem-match=block
-systemctl --user restart caelestia-udiskie.service
+
+# The service is deployed immediately before this hook on a clean install.
+# Reload the user manager before referring to it; otherwise `restart` fails
+# with "Unit ... not found" and makes the whole installer hook exit 1.
+systemctl --user daemon-reload
 
 # Thunar's configuration is deployed by the thunar component. These settings
 # cover desktop environments that also consult GNOME's media-handling schema.
@@ -48,7 +52,6 @@ if command -v gsettings >/dev/null 2>&1; then
     gsettings set org.gnome.desktop.media-handling automount-open false >/dev/null 2>&1 || true
 fi
 
-systemctl --user daemon-reload
 systemctl --user enable --now caelestia-udiskie.service
 
 printf 'Generic UDisks2 automount policy installed.\n'
