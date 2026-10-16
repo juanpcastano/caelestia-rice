@@ -52,26 +52,17 @@ if ! "${elevated[@]}" /bin/sh -eu -c '
     /usr/bin/install -o root -g root -m 0644 "$3" "$udev_tmp"
     /usr/bin/mv -f "$rule_tmp" "$2"
     /usr/bin/mv -f "$udev_tmp" "$4"
+
+    # Verify while still privileged.  The Polkit rules directory is commonly
+    # mode 0750 root:polkitd, so the calling user cannot reliably stat or cmp
+    # the installed rule after pkexec returns.
+    test -f "$2" || { printf "Polkit automount rule was not installed: %s\\n" "$2" >&2; exit 1; }
+    test -f "$4" || { printf "UDev automount rule was not installed: %s\\n" "$4" >&2; exit 1; }
+    /usr/bin/cmp -s "$1" "$2" || { printf "Installed Polkit automount rule differs from its source.\\n" >&2; exit 1; }
+    /usr/bin/cmp -s "$3" "$4" || { printf "Installed UDev automount rule differs from its source.\\n" >&2; exit 1; }
     trap - EXIT
 ' _ "$rule_source" "$rule_destination" "$udev_source" "$udev_destination"; then
     printf 'Could not install the Polkit and UDev automount rules; no service was enabled.\n' >&2
-    exit 1
-fi
-
-if [[ ! -f "$rule_destination" ]]; then
-    printf 'Polkit automount rule was not installed: %s\n' "$rule_destination" >&2
-    exit 1
-fi
-if [[ ! -f "$udev_destination" ]]; then
-    printf 'UDev automount rule was not installed: %s\n' "$udev_destination" >&2
-    exit 1
-fi
-if ! cmp -s "$rule_source" "$rule_destination"; then
-    printf 'Installed Polkit automount rule differs from its source.\n' >&2
-    exit 1
-fi
-if ! cmp -s "$udev_source" "$udev_destination"; then
-    printf 'Installed UDev automount rule differs from its source.\n' >&2
     exit 1
 fi
 
