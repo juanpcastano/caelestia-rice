@@ -78,15 +78,15 @@ if bootloader == "grub":
     grub = Path("/etc/default/grub")
     text = grub.read_text()
     if resume not in text:
-        text, count = re.subn(
-            r'^GRUB_CMDLINE_LINUX_DEFAULT="',
-            f'GRUB_CMDLINE_LINUX_DEFAULT="{resume} ',
+        match = re.search(
+            r'^(GRUB_CMDLINE_LINUX_DEFAULT=)([\"\'])(.*)\2$',
             text,
-            count=1,
             flags=re.M,
         )
-        if count != 1:
+        if match is None:
             raise SystemExit("Could not find GRUB_CMDLINE_LINUX_DEFAULT in /etc/default/grub")
+        replacement = f'{match.group(1)}{match.group(2)}{resume} {match.group(3)}{match.group(2)}'
+        text = text[:match.start()] + replacement + text[match.end():]
         grub.write_text(text)
 elif bootloader == "refind":
     refind = Path("/boot/refind_linux.conf")
