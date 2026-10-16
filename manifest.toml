@@ -180,7 +180,7 @@ packages = ["noto-fonts", "noto-fonts-cjk", "noto-fonts-emoji", "noto-fonts-extr
 [[components]]
 name = "tools"
 default = true
-packages = ["curl", "git", "inotify-tools", "util-linux", "trash-cli", "jq", "bat", "ripgrep", "hyprpicker", "xdg-user-dirs", "app2unit", "gammastep", "cava", "mpv", "pavucontrol", "fuzzel", "less", "nvtop", "openssh", "reflector", "wget", "7zip", "gparted"]
+packages = ["curl", "git", "inotify-tools", "util-linux", "trash-cli", "jq", "bat", "ripgrep", "hyprpicker", "xdg-user-dirs", "app2unit", "gammastep", "cava", "mpv", "pavucontrol", "fuzzel", "less", "nvtop", "openssh", "reflector", "wget", "7zip", "gparted", "xorg-xhost"]
 post_install = ["xdg-user-dirs-update"]
 
 [[components]]
