@@ -24,16 +24,54 @@ fi
 # Install both files in one privileged transaction.  Calling pkexec once per
 # file makes the graphical polkit agent ask for the password twice and can
 # leave the hook half-completed when the second authorization is rejected.
-if ! "${elevated[@]}" /bin/sh -c '
-    /usr/bin/install -o root -g root -Dm644 "$1" "$2"
-    /usr/bin/install -o root -g root -Dm644 "$3" "$4"
+#
+# Keep errexit enabled in the privileged shell too.  Without it, a failed
+# Polkit install followed by a successful UDev install makes the shell return
+# success (the status of its last command), leaving the hook to report only the
+# misleading generic verification error.
+if ! "${elevated[@]}" /bin/sh -eu -c '
+    rule_dir=$(/usr/bin/dirname "$2")
+    udev_dir=$(/usr/bin/dirname "$4")
+
+    # Check every destination directory before touching either destination.
+    # This prevents a fresh install from being left with only one rule when a
+    # system has an unexpected Polkit/UDev layout or permission problem.
+    test -d "$rule_dir" || { printf "Polkit rules directory does not exist: %s\\n" "$rule_dir" >&2; exit 1; }
+    test -d "$udev_dir" || { printf "UDev rules directory does not exist: %s\\n" "$udev_dir" >&2; exit 1; }
+    test -w "$rule_dir" || { printf "Polkit rules directory is not writable: %s\\n" "$rule_dir" >&2; exit 1; }
+    test -w "$udev_dir" || { printf "UDev rules directory is not writable: %s\\n" "$udev_dir" >&2; exit 1; }
+
+    rule_tmp=$(/usr/bin/mktemp "$rule_dir/.49-caelestia-automount.rules.XXXXXX")
+    udev_tmp=$(/usr/bin/mktemp "$udev_dir/.80-caelestia-udisks-auto.rules.XXXXXX")
+    trap "/usr/bin/rm -f \\\"$rule_tmp\\\" \\\"$udev_tmp\\\"" EXIT
+
+    # Prepare both files first.  The destination paths are only replaced once
+    # both source copies have succeeded, so a failed fresh install cannot
+    # leave one system rule installed and the other one missing.
+    /usr/bin/install -o root -g root -m 0644 "$1" "$rule_tmp"
+    /usr/bin/install -o root -g root -m 0644 "$3" "$udev_tmp"
+    /usr/bin/mv -f "$rule_tmp" "$2"
+    /usr/bin/mv -f "$udev_tmp" "$4"
+    trap - EXIT
 ' _ "$rule_source" "$rule_destination" "$udev_source" "$udev_destination"; then
-    printf 'Could not install the Polkit and UDev automount rules.\n' >&2
+    printf 'Could not install the Polkit and UDev automount rules; no service was enabled.\n' >&2
     exit 1
 fi
 
-if [[ ! -f "$rule_destination" || ! -f "$udev_destination" ]]; then
-    printf 'Automount rules were not installed correctly.\n' >&2
+if [[ ! -f "$rule_destination" ]]; then
+    printf 'Polkit automount rule was not installed: %s\n' "$rule_destination" >&2
+    exit 1
+fi
+if [[ ! -f "$udev_destination" ]]; then
+    printf 'UDev automount rule was not installed: %s\n' "$udev_destination" >&2
+    exit 1
+fi
+if ! cmp -s "$rule_source" "$rule_destination"; then
+    printf 'Installed Polkit automount rule differs from its source.\n' >&2
+    exit 1
+fi
+if ! cmp -s "$udev_source" "$udev_destination"; then
+    printf 'Installed UDev automount rule differs from its source.\n' >&2
     exit 1
 fi
 
