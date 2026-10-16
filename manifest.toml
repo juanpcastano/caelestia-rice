@@ -243,6 +243,16 @@ dest = "$XDG_CONFIG_HOME/caelestia/cli.json"
 name = "apps"
 default = true
 packages = ["brave-bin", "obs-studio", "onlyoffice-bin"]
+post_install = [
+    "mkdir -p $HOME/.local/share/applications",
+    "sed 's#^Exec=/usr/bin/onlyoffice-desktopeditors #Exec=/usr/bin/onlyoffice-desktopeditors --system-title-bar #' /usr/share/applications/onlyoffice-desktopeditors.desktop > $HOME/.local/share/applications/onlyoffice-desktopeditors.desktop",
+    "update-desktop-database $HOME/.local/share/applications >/dev/null 2>&1 || true",
+]
+post_update = [
+    "mkdir -p $HOME/.local/share/applications",
+    "sed 's#^Exec=/usr/bin/onlyoffice-desktopeditors #Exec=/usr/bin/onlyoffice-desktopeditors --system-title-bar #' /usr/share/applications/onlyoffice-desktopeditors.desktop > $HOME/.local/share/applications/onlyoffice-desktopeditors.desktop",
+    "update-desktop-database $HOME/.local/share/applications >/dev/null 2>&1 || true",
+]
 
 # --- Optional components ---
 
