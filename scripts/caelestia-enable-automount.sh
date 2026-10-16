@@ -60,14 +60,14 @@ if ! "${elevated[@]}" /bin/sh -eu -c '
     test -f "$4" || { printf "UDev automount rule was not installed: %s\\n" "$4" >&2; exit 1; }
     /usr/bin/cmp -s "$1" "$2" || { printf "Installed Polkit automount rule differs from its source.\\n" >&2; exit 1; }
     /usr/bin/cmp -s "$3" "$4" || { printf "Installed UDev automount rule differs from its source.\\n" >&2; exit 1; }
+
+    /usr/bin/udevadm control --reload-rules
+    /usr/bin/udevadm trigger --subsystem-match=block
     trap - EXIT
 ' _ "$rule_source" "$rule_destination" "$udev_source" "$udev_destination"; then
     printf 'Could not install the Polkit and UDev automount rules; no service was enabled.\n' >&2
     exit 1
 fi
-
-"${elevated[@]}" /usr/bin/udevadm control --reload-rules
-"${elevated[@]}" /usr/bin/udevadm trigger --subsystem-match=block
 
 # The service is deployed immediately before this hook on a clean install.
 # Reload the user manager before referring to it; otherwise `restart` fails
