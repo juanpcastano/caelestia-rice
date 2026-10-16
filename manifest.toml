@@ -104,7 +104,6 @@ dest = "$XDG_CONFIG_HOME/Thunar"
 
 [[components]]
 name = "automount"
-default = true
 packages = ["udisks2", "gvfs", "udiskie"]
 post_install = [
     "chmod +x $HOME/.local/bin/caelestia-enable-automount $HOME/.local/bin/caelestia-mount-auto-volumes",
@@ -181,7 +180,7 @@ packages = ["noto-fonts", "noto-fonts-cjk", "noto-fonts-emoji", "noto-fonts-extr
 [[components]]
 name = "tools"
 default = true
-packages = ["curl", "git", "inotify-tools", "util-linux", "trash-cli", "jq", "bat", "ripgrep", "hyprpicker", "xdg-user-dirs", "app2unit", "gammastep", "udiskie", "cava", "mpv", "pavucontrol", "fuzzel", "less", "nvtop", "openssh", "reflector", "wget", "7zip"]
+packages = ["curl", "git", "inotify-tools", "util-linux", "trash-cli", "jq", "bat", "ripgrep", "hyprpicker", "xdg-user-dirs", "app2unit", "gammastep", "cava", "mpv", "pavucontrol", "fuzzel", "less", "nvtop", "openssh", "reflector", "wget", "7zip"]
 post_install = ["xdg-user-dirs-update"]
 
 [[components]]
@@ -243,7 +242,7 @@ dest = "$XDG_CONFIG_HOME/caelestia/cli.json"
 [[components]]
 name = "apps"
 default = true
-packages = ["brave-bin", "obs-studio", "libreoffice-fresh"]
+packages = ["brave-bin", "obs-studio", "onlyoffice-bin"]
 
 # --- Optional components ---
 
