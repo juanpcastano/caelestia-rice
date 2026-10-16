@@ -41,14 +41,26 @@ fi
 
 timestamp=$(date +%Y%m%d-%H%M%S)
 cp -a /etc/mkinitcpio.conf "/etc/mkinitcpio.conf.bak.$timestamp"
-cp -a /etc/default/grub "/etc/default/grub.bak.$timestamp"
 
-python - "$swap_uuid" <<'PY'
+bootloader=""
+if [[ -f /etc/default/grub ]]; then
+    bootloader="grub"
+    cp -a /etc/default/grub "/etc/default/grub.bak.$timestamp"
+elif [[ -f /boot/refind_linux.conf ]]; then
+    bootloader="refind"
+    cp -a /boot/refind_linux.conf "/boot/refind_linux.conf.bak.$timestamp"
+else
+    echo "Could not find a supported bootloader configuration (GRUB or rEFInd)." >&2
+    exit 1
+fi
+
+python - "$swap_uuid" "$bootloader" <<'PY'
 from pathlib import Path
 import re
 import sys
 
 uuid = sys.argv[1]
+bootloader = sys.argv[2]
 
 mkinitcpio = Path("/etc/mkinitcpio.conf")
 text = mkinitcpio.read_text()
@@ -61,22 +73,43 @@ if "resume" not in hooks:
     text = text[:match.start()] + "HOOKS=(" + " ".join(hooks) + ")" + text[match.end():]
     mkinitcpio.write_text(text)
 
-grub = Path("/etc/default/grub")
-text = grub.read_text()
 resume = f"resume=UUID={uuid}"
-if resume not in text:
-    text, count = re.subn(
-        r'^GRUB_CMDLINE_LINUX_DEFAULT="',
-        f'GRUB_CMDLINE_LINUX_DEFAULT="{resume} ',
-        text,
-        count=1,
-        flags=re.M,
-    )
-    if count != 1:
-        raise SystemExit("Could not find GRUB_CMDLINE_LINUX_DEFAULT in /etc/default/grub")
-    grub.write_text(text)
+if bootloader == "grub":
+    grub = Path("/etc/default/grub")
+    text = grub.read_text()
+    if resume not in text:
+        text, count = re.subn(
+            r'^GRUB_CMDLINE_LINUX_DEFAULT="',
+            f'GRUB_CMDLINE_LINUX_DEFAULT="{resume} ',
+            text,
+            count=1,
+            flags=re.M,
+        )
+        if count != 1:
+            raise SystemExit("Could not find GRUB_CMDLINE_LINUX_DEFAULT in /etc/default/grub")
+        grub.write_text(text)
+elif bootloader == "refind":
+    refind = Path("/boot/refind_linux.conf")
+    lines = refind.read_text().splitlines(keepends=True)
+    changed = False
+    for index, line in enumerate(lines):
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        updated = re.sub(r'\bresume=\S+', resume, line)
+        if updated == line and resume not in line:
+            end = updated.rfind('"')
+            if end == -1:
+                continue
+            updated = updated[:end].rstrip() + " " + resume + updated[end:]
+        if updated != line:
+            lines[index] = updated
+            changed = True
+    if changed:
+        refind.write_text("".join(lines))
 PY
 
 mkinitcpio -P
-grub-mkconfig -o /boot/grub/grub.cfg
+if [[ "$bootloader" == "grub" ]]; then
+    grub-mkconfig -o /boot/grub/grub.cfg
+fi
 echo "Hibernate resume enabled using $swap_device (UUID: $swap_uuid)."
