@@ -240,6 +240,28 @@ src = "caelestia/cli.json"
 dest = "$XDG_CONFIG_HOME/caelestia/cli.json"
 
 [[components]]
+name = "brave-theme"
+default = true
+packages = []
+post_install = [
+    "chmod +x $HOME/.local/bin/caelestia-brave-policy-root $HOME/.local/bin/caelestia-update-brave-policy $HOME/.local/bin/caelestia-install-brave-policy",
+    "$HOME/.local/bin/caelestia-install-brave-policy",
+]
+post_update = [
+    "chmod +x $HOME/.local/bin/caelestia-brave-policy-root $HOME/.local/bin/caelestia-update-brave-policy $HOME/.local/bin/caelestia-install-brave-policy",
+    "$HOME/.local/bin/caelestia-install-brave-policy",
+]
+[[components.entries]]
+src = "scripts/caelestia-brave-policy-root.sh"
+dest = "$HOME/.local/bin/caelestia-brave-policy-root"
+[[components.entries]]
+src = "scripts/caelestia-update-brave-policy.sh"
+dest = "$HOME/.local/bin/caelestia-update-brave-policy"
+[[components.entries]]
+src = "scripts/caelestia-install-brave-policy.sh"
+dest = "$HOME/.local/bin/caelestia-install-brave-policy"
+
+[[components]]
 name = "apps"
 default = true
 packages = ["brave-bin", "obs-studio", "onlyoffice-bin"]

@@ -6,11 +6,13 @@
   "theme": {
     "enableTerm": true,
     "enableHypr": true,
+    "enableChromium": true,
     "enableDiscord": true,
     "enableSpicetify": true,
     "enableFuzzel": true,
     "enableBtop": true,
     "enableGtk": true,
-    "enableQt": true
+    "enableQt": true,
+    "postHook": "$HOME/.local/bin/caelestia-update-brave-policy"
   }
 }
