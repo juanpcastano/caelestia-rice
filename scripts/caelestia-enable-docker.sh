@@ -9,7 +9,7 @@ if [[ $EUID -eq 0 ]]; then
     exit 1
 fi
 
-sudo systemctl enable --now docker.service
 sudo usermod -aG docker "$(id -un)"
+sudo systemctl enable --now docker.service
 
 echo "Docker enabled. Log out and back in for the docker group membership to apply."
