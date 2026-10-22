@@ -1,6 +1,7 @@
 # Manifest consumed by the upstream Caelestia CLI.
 # The CLI's package manager targets Arch-based distributions; it is not a
-# cross-distro provisioning system and does not configure GPU drivers/services.
+# cross-distro provisioning system and does not configure GPU drivers or general
+# system services; components may explicitly configure the services they own.
 
 packages = ["caelestia-shell", "caelestia-cli"]
 post_install = [
@@ -320,6 +321,11 @@ packages = ["equibop-bin"]
 [[components]]
 name = "docker"
 packages = ["docker", "docker-compose"]
+post_install = ["chmod +x $HOME/.local/bin/caelestia-enable-docker", "$HOME/.local/bin/caelestia-enable-docker"]
+post_update = ["chmod +x $HOME/.local/bin/caelestia-enable-docker", "$HOME/.local/bin/caelestia-enable-docker"]
+[[components.entries]]
+src = "scripts/caelestia-enable-docker.sh"
+dest = "$HOME/.local/bin/caelestia-enable-docker"
 
 [[components]]
 name = "greetd"
