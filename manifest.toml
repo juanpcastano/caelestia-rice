@@ -17,12 +17,14 @@ packages = ["hyprland", "xdg-desktop-portal-hyprland", "xdg-desktop-portal-gtk"]
 post_install = [
     "hyprctl reload >/dev/null 2>&1 || true",
     "chmod +x $HOME/.local/bin/caelestia-watcher $HOME/.local/bin/caelestia-spicetify-watch $HOME/.local/bin/caelestia-numlock-resume",
+    "sudo usermod -aG input $USER >/dev/null 2>&1 || true",
     "systemctl --user daemon-reload >/dev/null 2>&1 || true",
     "systemctl --user enable --now caelestia-numlock-resume.service >/dev/null 2>&1 || true",
 ]
 post_update = [
     "hyprctl reload >/dev/null 2>&1 || true",
     "chmod +x $HOME/.local/bin/caelestia-watcher $HOME/.local/bin/caelestia-spicetify-watch $HOME/.local/bin/caelestia-numlock-resume",
+    "sudo usermod -aG input $USER >/dev/null 2>&1 || true",
     "systemctl --user daemon-reload >/dev/null 2>&1 || true",
     "systemctl --user enable --now caelestia-numlock-resume.service >/dev/null 2>&1 || true",
 ]
@@ -36,6 +38,9 @@ dest = "$XDG_CONFIG_HOME/caelestia/hypr-vars.lua"
 src = "caelestia/hypr-user.lua"
 dest = "$XDG_CONFIG_HOME/caelestia/hypr-user.lua"
 [[components.entries]]
+src = "caelestia/shell.json"
+dest = "$XDG_CONFIG_HOME/caelestia/shell.json"
+[[components.entries]]
 src = "scripts/caelestia-watcher.sh"
 dest = "$HOME/.local/bin/caelestia-watcher"
 [[components.entries]]
@@ -47,6 +52,9 @@ dest = "$HOME/.local/bin/caelestia-numlock-resume"
 [[components.entries]]
 src = "systemd/caelestia-numlock-resume.service"
 dest = "$XDG_CONFIG_HOME/systemd/user/caelestia-numlock-resume.service"
+[[components.entries]]
+src = "systemd/ydotool.service.d/override.conf"
+dest = "$XDG_CONFIG_HOME/systemd/user/ydotool.service.d/override.conf"
 
 [[components]]
 name = "hibernate"

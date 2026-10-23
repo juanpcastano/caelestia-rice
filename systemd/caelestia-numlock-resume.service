@@ -2,8 +2,6 @@
 Description=Resynchronise NumLock after system resume
 Wants=ydotool.service
 After=graphical-session.target ydotool.service
-PartOf=graphical-session.target
-
 [Service]
 Type=simple
 ExecStart=%h/.local/bin/caelestia-numlock-resume

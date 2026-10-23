@@ -1,0 +1,25 @@
+{
+  "general": {
+    "idle": {
+      "lockBeforeSleep": true,
+      "timeouts": [
+        {
+          "timeout": 300,
+          "idleAction": "lock"
+        },
+        {
+          "timeout": 600,
+          "idleAction": "dpms off",
+          "returnAction": "dpms on"
+        },
+        {
+          "timeout": 720,
+          "idleAction": ["systemctl", "suspend-then-hibernate"]
+        }
+      ]
+    }
+  },
+  "lock": {
+    "useWallpaper": true
+  }
+}
