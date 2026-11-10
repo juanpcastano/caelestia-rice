@@ -142,7 +142,6 @@ Review the full diff before merging so intentional removals and personal setting
 | `XF86AudioRaiseVolume/LowerVolume` | Increase/Decrease volume     |
 | `XF86AudioMute`                    | Mute output                  |
 | `XF86AudioMicMute`                 | Mute microphone              |
-| `Super + Shift + M`                | Mute output                  |
 
 ### Media (Multimedia Control)
 

@@ -86,6 +86,8 @@ return {
     kbSession = "CTRL + ALT + Delete",
     kbClearNotifs = "SUPER + N",
     kbShowPanels = "SUPER + M",
+    -- Mute remains available through the keyboard's XF86AudioMute key.
+    kbVolumeMute = {},
     kbLock = "SUPER + B",
     kbRestoreLock = "SUPER + ALT + B",
 
