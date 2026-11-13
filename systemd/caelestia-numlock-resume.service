@@ -5,7 +5,7 @@ After=graphical-session.target ydotool.service
 [Service]
 Type=simple
 ExecStart=%h/.local/bin/caelestia-numlock-resume
-Restart=on-failure
+Restart=always
 RestartSec=2s
 
 [Install]
